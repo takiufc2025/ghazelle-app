@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHAZELLE COLLECTION | زليج عصري</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #003366; --accent: #3b82f6; --white: rgba(255, 255, 255, 0.96); }
+        body, html { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; height: 100%; width: 100%; }
+        
+        /* الخلفية بزخرفة الزليج */
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://output.googleusercontent.com/static/image_generation_content/0/generated_image.webp') center/cover no-repeat;
+            z-index: -1;
+        }
+
+        /* شاشة الترحيب */
+        #welcome-screen {
+            position: fixed; width: 100%; height: 100vh; background: rgba(0, 20, 40, 0.88);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            color: white; z-index: 1000; transition: 0.8s ease-in-out;
+        }
+
+        .start-btn {
+            padding: 18px 50px; background: var(--accent); color: white; border: none;
+            border-radius: 50px; font-size: 1.4rem; font-weight: bold; cursor: pointer;
+            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* التصميم الرئيسي للنموذج */
+        .main-container {
+            max-width: 500px; margin: 40px auto; padding: 30px;
+            background: var(--white); border-radius: 25px; display: none;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        input, select { padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; width: 100%; font-family: inherit; }
+        
+        .choice-btn { flex: 1; padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; text-align: center; cursor: pointer; font-weight: bold; background: #f8fafc; }
+        .choice-btn.active { background: var(--primary); color: white; }
+
+        .submit-btn { width: 100%; padding: 18px; background: #10b981; color: white; border: none; border-radius: 12px; font-size: 1.3rem; font-weight: bold; cursor: pointer; }
+        
+        .hidden { display: none; }
+        .success-box { text-align: center; display: none; padding: 40px; }
+    </style>
+</head>
+<body>
+
+<div class="bg-overlay"></div>
+
+<div id="welcome-screen">
+    <h1 style="font-size: 2.5rem;">مرحباً بك</h1>
+    <p style="margin-bottom: 30px;">تصاميمنا تجمع بين الأصالة والعصرنة</p>
+    <button class="start-btn" onclick="openApp()">تقديم طلب</button>
+</div>
+
+<div class="main-container" id="app-form">
+    <div id="form-content">
+        <h2 style="text-align: center; color: var(--primary);">📋 استمارة الطلب</h2>
+        <form id="orderForm">
+            <div class="input-row">
+                <input type="text" name="firstname" placeholder="الاسم" required>
+                <input type="text" name="familyname" placeholder="اللقب" required>
+            </div>
+            <input type="tel" name="phone" placeholder="رقم الهاتف" style="margin-bottom:15px;" required>
+
+            <div class="input-row">
+                <select name="model" required><option value="">المودال</option><option value="Noor">Noor</option><option value="Ghazelle">Ghazelle</option></select>
+                <select name="size" required><option value="">المقاس</option><option value="36">36</option><option value="38">38</option></select>
+            </div>
+
+            <div class="input-row" style="margin-top: 10px;">
+                <div class="choice-btn" id="homeBtn" onclick="selectDelivery('المنزل')">🏠 للمنزل</div>
+                <div class="choice-btn" id="deskBtn" onclick="selectDelivery('المكتب')">🏢 المكتب</div>
+            </div>
+            <input type="hidden" name="delivery_type" id="delivery_type" required>
+
+            <div id="geo-fields" class="hidden">
+                <select name="wilaya" style="margin-top:15px;" onchange="this.nextElementSibling.classList.remove('hidden')">
+                    <option value="">اختر الولاية</option>
+                    <option value="الجزائر">الجزائر</option><option value="وهران">وهران</option>
+                </select>
+                <select name="city" class="hidden" style="margin-top:15px;">
+                    <option value="">اختر البلدية</option><option value="المركز">المركز</option>
+                </select>
+            </div>
+
+            <button type="submit" class="submit-btn" id="subBtn" style="margin-top:20px;">ارسال الطلبية</button>
+        </form>
+    </div>
+    <div id="success-box" class="success-box">
+        <div style="font-size: 4rem;">✨</div>
+        <h3 style="color: #10b981;">شكراً على ثقتك!</h3>
+        <p>تم استلام طلبك بنجاح.</p>
+    </div>
+</div>
+
+<script>
+    function openApp() {
+        document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
+        setTimeout(() => { document.getElementById('app-form').style.display = 'block'; }, 600);
+    }
+
+    function selectDelivery(type) {
+        document.getElementById('delivery_type').value = type;
+        document.getElementById('homeBtn').classList.toggle('active', type === 'المنزل');
+        document.getElementById('deskBtn').classList.toggle('active', type === 'المكتب');
+        document.getElementById('geo-fields').classList.remove('hidden');
+    }
+
+    document.getElementById('orderForm').onsubmit = async function(e) {
+        e.preventDefault();
+        document.getElementById('subBtn').innerText = "جاري الحفظ...";
+        const data = Object.fromEntries(new FormData(this));
+
+        try {
+            // استخدام رابط نسبي ليعمل على الرابط الحقيقي تلقائياً
+            const res = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            if (res.ok) {
+                document.getElementById('form-content').style.display = 'none';
+                document.getElementById('success-box').style.display = 'block';
+            }
+        } catch (err) { alert("خطأ في الاتصال بالخادم"); }
+    };
+</script>
+</body>
+</html>
