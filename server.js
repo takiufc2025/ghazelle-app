@@ -12,40 +12,35 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
-// استبدل الرابط أدناه برابط Google Apps Script الخاص بك
+// رابط Google Apps Script الخاص بك (تأكد من تحديثه بعد كل Deploy)
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbw7keXVKb4LsL0thEo6hFaQEXplapzALUBq-w7p6QcCXF8aIvgEn9Em2i3M7eyYvveGUw/exec';
 
 app.post('/api/orders', async (req, res) => {
     try {
-        // إرسال البيانات إلى Google Sheets
-        await axios.post(GOOGLE_SHEET_URL, req.body);
+        // تجهيز البيانات بنفس الصيغة التي يتوقعها كود Google Apps Script الخاص بك
+        const formData = {
+            firstname: req.body.firstname,
+            familyname: req.body.familyname,
+            phone: req.body.phone,
+            delivery_type: req.body.delivery_type,
+            wilaya: req.body.wilaya,
+            commune: req.body.city, // ربط 'city' من النموذج بـ 'commune' في جوجل
+            description: `موديل: ${req.body.model}, مقاس: ${req.body.size}`,
+            stopdesk_id: req.body.stopdesk_id || ""
+        };
+
+        // إرسال البيانات إلى جوجل
+        const googleResponse = await axios.post(GOOGLE_SHEET_URL, formData);
         
-        // حفظ نسخة احتياطية محلياً
-        const filePath = path.join(__dirname, 'orders.json');
-        fs.readFile(filePath, 'utf8', (err, data) => {
-            let orders = [];
-            if (!err && data) {
-                try { orders = JSON.parse(data); } catch (e) { orders = []; }
-            }
-            orders.push({ id: Date.now(), time: new Date().toLocaleString('ar-DZ'), ...req.body });
-            fs.writeFile(filePath, JSON.stringify(orders, null, 2), (err) => {
-                if (!err) console.log("💾 حُفظت نسخة احتياطية");
-            });
-        });
-
+        console.log("✅ تم إرسال الطلبية لجوجل بنجاح");
         res.status(200).send("Success");
-    } catch (error) {
-        console.error("❌ فشل الإرسال:", error.message);
-        res.status(500).send("Error");
-    }
-});
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    } catch (error) {
+        console.error("❌ خطأ في الإرسال:", error.message);
+        res.status(500).send("حدث خطأ أثناء معالجة الطلب");
+    }
 });
 
 app.listen(PORT, () => {
     console.log(`🚀 السيرفر يعمل على المنفذ: ${PORT}`);
 });
-
-
