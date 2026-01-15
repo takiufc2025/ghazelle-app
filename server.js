@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
 // استبدل الرابط أدناه برابط Google Apps Script الخاص بك
-const GOOGLE_SHEET_URL = 'ضع_هنا_الرابط_الذي_نسخته_من_جوجل';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzXhyydkxWVIFckS5wmajQaF7zNT4vaSbCfzN30hV6UPqYyBWVAHkJ45OnzyBVBhT60/exec';
 
 app.post('/api/orders', async (req, res) => {
     try {
@@ -47,3 +47,4 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`🚀 السيرفر يعمل على المنفذ: ${PORT}`);
 });
+
