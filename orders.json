@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1768501745569,
+    "time": "15‏/1‏/2026، 7:29:05 م",
+    "firstname": "taki",
+    "familyname": "jouini",
+    "phone": "0770576766",
+    "delivery_type": "adomicile",
+    "wilaya": "الجزائر"
+  },
+  {
+    "id": 1768501842329,
+    "time": "15‏/1‏/2026، 7:30:42 م",
+    "firstname": "taki",
+    "familyname": "jouini",
+    "phone": "0770576766",
+    "model_select": "Rihanna",
+    "color_select": "Rouge - أحمر",
+    "size_select": "36",
+    "delivery_type": "adomicile",
+    "wilaya": "الجزائر",
+    "description": "Rihanna * المقاس: 36 * اللون: Rouge - أحمر"
+  },
+  {
+    "id": 1768502412714,
+    "time": "15‏/1‏/2026، 7:40:12 م",
+    "fullname": "تقي الدين جويني",
+    "phone": "0770576766",
+    "model": "Noor",
+    "color": "أحمر",
+    "size": "36",
+    "delivery_type": "المكتب",
+    "wilaya": "الجزائر",
+    "city": "بلدية 2",
+    "office": "مكتب ياليدين الرئيسي"
+  }
+]
