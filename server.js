@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
 // استبدل الرابط أدناه برابط Google Apps Script الخاص بك
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzXhyydkxWVIFckS5wmajQaF7zNT4vaSbCfzN30hV6UPqYyBWVAHkJ45OnzyBVBhT60/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbw7keXVKb4LsL0thEo6hFaQEXplapzALUBq-w7p6QcCXF8aIvgEn9Em2i3M7eyYvveGUw/exec';
 
 app.post('/api/orders', async (req, res) => {
     try {
@@ -47,4 +47,5 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
     console.log(`🚀 السيرفر يعمل على المنفذ: ${PORT}`);
 });
+
 
