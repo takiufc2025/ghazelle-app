@@ -1,139 +1,222 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="ar">
+<html dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHAZELLE COLLECTION | غزال</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>GHAZELLE COLLECTION - نظام الطلبيات</title>
     <style>
-        :root { --primary: #003366; --accent: #3b82f6; --white: rgba(255, 255, 255, 0.96); }
-        body, html { margin: 0; padding: 0; font-family: 'Cairo', sans-serif; height: 100%; width: 100%; }
-        
-        /* الخلفية بزخرفة الزليج */
-        .bg-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://output.googleusercontent.com/static/image_generation_content/0/generated_image.webp') center/cover no-repeat;
-            z-index: -1;
-        }
-
-        /* شاشة الترحيب */
-        #welcome-screen {
-            position: fixed; width: 100%; height: 100vh; background: rgba(0, 20, 40, 0.88);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            color: white; z-index: 1000; transition: 0.8s ease-in-out;
-        }
-
-        .start-btn {
-            padding: 18px 50px; background: var(--accent); color: white; border: none;
-            border-radius: 50px; font-size: 1.4rem; font-weight: bold; cursor: pointer;
-            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
-        }
-
-        /* التصميم الرئيسي للنموذج */
-        .main-container {
-            max-width: 500px; margin: 40px auto; padding: 30px;
-            background: var(--white); border-radius: 25px; display: none;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); animation: slideUp 0.6s ease;
-        }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-
-        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
-        input, select { padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; width: 100%; font-family: inherit; }
-        
-        .choice-btn { flex: 1; padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; text-align: center; cursor: pointer; font-weight: bold; background: #f8fafc; }
-        .choice-btn.active { background: var(--primary); color: white; }
-
-        .submit-btn { width: 100%; padding: 18px; background: #10b981; color: white; border: none; border-radius: 12px; font-size: 1.3rem; font-weight: bold; cursor: pointer; }
-        
+        :root { --primary-blue: #1e293b; --accent-blue: #3b82f6; --success-green: #10b981; --bg-light: #f1f5f9; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg-light); margin: 0; display: flex; justify-content: center; padding: 20px; }
+        .container { width: 100%; max-width: 500px; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .header { background-color: var(--primary-blue); color: white; padding: 20px; display: flex; align-items: center; justify-content: center; gap: 15px; }
+        .logo { width: 70px; height: auto; border-radius: 8px; }
+        .header h1 { margin: 0; font-size: 1.2rem; }
+        .form-content { padding: 25px; }
+        .section-title { font-size: 1rem; font-weight: bold; color: var(--primary-blue); margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .form-group { margin-bottom: 15px; }
+        input, select { width: 100%; padding: 12px; border: 1.5px solid #e2e8f0; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
+        .allow-box { background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px dashed var(--accent-blue); display: flex; align-items: center; gap: 10px; margin-bottom: 15px; cursor: pointer; }
+        .allow-box input { width: 20px; height: 20px; cursor: pointer; }
+        .allow-box label { font-weight: bold; color: var(--primary-blue); cursor: pointer; }
+        .delivery-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .option-card { border: 2px solid #e2e8f0; border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; font-weight: bold; }
+        .option-card.active { border-color: var(--accent-blue); background-color: #eff6ff; color: var(--accent-blue); }
+        .submit-btn { width: 100%; padding: 16px; background-color: var(--success-green); color: white; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
         .hidden { display: none; }
-        .success-box { text-align: center; display: none; padding: 40px; }
+        #msg { text-align: center; margin-top: 15px; font-weight: bold; color: var(--success-green); }
+        .custom-input { margin-top: 5px; border-color: var(--accent-blue); background: #fffdf0; }
     </style>
 </head>
 <body>
-
-<div class="bg-overlay"></div>
-
-<div id="welcome-screen">
-    <h1 style="font-size: 2.5rem;">مرحباً بك</h1>
-    <p style="margin-bottom: 30px;">تصاميمنا تجمع بين الأصالة والعصرنة</p>
-    <button class="start-btn" onclick="openApp()">تقديم طلب</button>
-</div>
-
-<div class="main-container" id="app-form">
-    <div id="form-content">
-        <h2 style="text-align: center; color: var(--primary);">📋 استمارة الطلب</h2>
-        <form id="orderForm">
-            <div class="input-row">
-                <input type="text" name="firstname" placeholder="الاسم" required>
-                <input type="text" name="familyname" placeholder="اللقب" required>
-            </div>
-            <input type="tel" name="phone" placeholder="رقم الهاتف" style="margin-bottom:15px;" required>
-
-            <div class="input-row">
-                <select name="model" required><option value="">المودال</option><option value="Noor">Noor</option><option value="Ghazelle">Ghazelle</option></select>
-                <select name="size" required><option value="">المقاس</option><option value="36">36</option><option value="38">38</option></select>
-            </div>
-
-            <div class="input-row" style="margin-top: 10px;">
-                <div class="choice-btn" id="homeBtn" onclick="selectDelivery('المنزل')">🏠 للمنزل</div>
-                <div class="choice-btn" id="deskBtn" onclick="selectDelivery('المكتب')">🏢 المكتب</div>
-            </div>
-            <input type="hidden" name="delivery_type" id="delivery_type" required>
-
-            <div id="geo-fields" class="hidden">
-                <select name="wilaya" style="margin-top:15px;" onchange="this.nextElementSibling.classList.remove('hidden')">
-                    <option value="">اختر الولاية</option>
-                    <option value="الجزائر">الجزائر</option><option value="وهران">وهران</option>
-                </select>
-                <select name="city" class="hidden" style="margin-top:15px;">
-                    <option value="">اختر البلدية</option><option value="المركز">المركز</option>
-                </select>
-            </div>
-
-            <button type="submit" class="submit-btn" id="subBtn" style="margin-top:20px;">ارسال الطلبية</button>
-        </form>
+<div class="container">
+    <div class="header">
+        <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Logo" class="logo">
+        <div class="header-text"><h1>بوابة الطلبيات</h1><p>GHAZELLE COLLECTION SYSTEM</p></div>
     </div>
-    <div id="success-box" class="success-box">
-        <div style="font-size: 4rem;">✨</div>
-        <h3 style="color: #10b981;">شكراً على ثقتك!</h3>
-        <p>تم استلام طلبك بنجاح.</p>
-    </div>
+    <form id="orderForm" class="form-content">
+        <div class="section-title">👤 معلومات الزبون</div>
+        <div class="form-group"><input type="text" name="firstname" placeholder="الاسم" required></div>
+        <div class="form-group"><input type="text" name="familyname" placeholder="اللقب" required></div>
+        <div class="form-group"><input type="tel" name="phone" placeholder="رقم الهاتف" required></div>
+
+        <div class="section-title">👗 تفاصيل الطلبية</div>
+        
+        <div class="form-group">
+            <select name="model_select" id="model_select" onchange="toggleCustom(this, 'custom_model_div')" required>
+                <option value="">-- اختر المودال --</option>
+                <option value="Noor">Noor</option><option value="Ghazelle">Ghazelle</option><option value="Miral">Miral</option>
+                <option value="Hiba">Hiba</option><option value="Miral perlé">Miral perlé</option><option value="Rihanna">Rihanna</option><option value="Rahaf">Rahaf</option>
+                <option value="OTHER">إضافة مودال آخر...</option>
+            </select>
+            <div id="custom_model_div" class="hidden"><input type="text" id="custom_model" class="custom-input" placeholder="اكتب اسم المودال الجديد"></div>
+        </div>
+        
+        <div style="display: flex; gap: 10px;" class="form-group">
+            <div style="flex: 2;">
+                <select name="color_select" id="color_select" onchange="toggleCustom(this, 'custom_color_div')" required>
+                    <option value="">-- اختر اللون --</option>
+                    <option value="Rouge - أحمر">Rouge - أحمر</option>
+                    <option value="Blue - أزرق">Blue - أزرق</option>
+                    <option value="Vert - أخضر">Vert - أخضر</option>
+                    <option value="Noir - أسود">Noir - أسود</option>
+                    <option value="Blanc - أبيض">Blanc - أبيض</option>
+                    <option value="Rose - وردي">Rose - وردي</option>
+                    <option value="Marron - بني">Marron - بني</option>
+                    <option value="Beige - بيج">Beige - بيج</option>
+                    <option value="Doré - ذهبي">Doré - ذهبي</option>
+                    <option value="Argenté - فضي">Argenté - فضي</option>
+                    <option value="Blue clair - أزرق فاتح">Blue clair - أزرق فاتح</option>
+                    <option value="Blue roi - أزرق ملكي">Blue roi - أزرق ملكي</option>
+                    <option value="Vert foncé - أخضر غامق">Vert foncé - أخضر غامق</option>
+                    <option value="Vert olive - أخضر زيتوني">Vert olive - أخضر زيتوني</option>
+                    <option value="Vert d'eau - أخضر مائي">Vert d'eau - أخضر مائي</option>
+                    <option value="Blanc cassé - أبيض كاسي">Blanc cassé - أبيض كاسي</option>
+                    <option value="OTHER">لون غير موجود...</option>
+                </select>
+                <div id="custom_color_div" class="hidden"><input type="text" id="custom_color" class="custom-input" placeholder="اكتب اللون (FR)"></div>
+            </div>
+
+            <div style="flex: 1.5;">
+                <select name="size_select" id="size_select" onchange="toggleCustom(this, 'custom_size_div')" required>
+                    <option value="">-- المقاس --</option>
+                    <option value="36">36</option><option value="38">38</option><option value="40">40</option><option value="42">42</option>
+                    <option value="44">44</option><option value="46">46</option><option value="48">48</option>
+                    <option value="OTHER">آخر...</option>
+                </select>
+                <div id="custom_size_div" class="hidden"><input type="text" id="custom_size" class="custom-input" placeholder="أدخل المقاس"></div>
+            </div>
+        </div>
+
+        <div class="allow-box">
+            <input type="checkbox" id="allow_opening">
+            <label for="allow_opening">✅ مسموح بفتح الطرد عند الاستلام</label>
+        </div>
+
+        <div class="section-title">🚚 خيارات الشحن</div>
+        <div class="delivery-options">
+            <div class="option-card" id="homeOpt" onclick="setDelivery('adomicile')">🏠<br>توصيل منزلي</div>
+            <div class="option-card" id="deskOpt" onclick="setDelivery('stop desk')">🏢<br>مكتب ياليدين</div>
+        </div>
+        <input type="hidden" name="delivery_type" id="delivery_type" required>
+
+        <div id="locationFields" class="hidden">
+            <div class="form-group"><select name="wilaya" id="wilaya" onchange="initCommunes()" required></select></div>
+            <div class="form-group"><select name="commune" id="commune" onchange="initOffices()" required></select></div>
+            <div id="officeDiv" class="hidden"><select id="office" onchange="setOfficeId()"></select></div>
+        </div>
+        <input type="hidden" name="stopdesk_id" id="stopdesk_id">
+        <button type="submit" id="btn" class="submit-btn">+ تأكيد طلبية جديدة</button>
+        <div id="msg"></div>
+    </form>
 </div>
 
 <script>
-    function openApp() {
-        document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
-        setTimeout(() => { document.getElementById('app-form').style.display = 'block'; }, 600);
+let data = [];
+
+// جلب بيانات ياليدين عند تحميل الصفحة عبر السيرفر الخاص بك
+window.onload = async () => {
+    try {
+        const response = await fetch('/api/yalidine-data');
+        data = await response.json();
+        console.log("Data loaded successfully");
+    } catch (e) {
+        console.error("Error loading data:", e);
     }
+};
 
-    function selectDelivery(type) {
-        document.getElementById('delivery_type').value = type;
-        document.getElementById('homeBtn').classList.toggle('active', type === 'المنزل');
-        document.getElementById('deskBtn').classList.toggle('active', type === 'المكتب');
-        document.getElementById('geo-fields').classList.remove('hidden');
-    }
+function toggleCustom(select, divId) {
+    const div = document.getElementById(divId);
+    const input = div.querySelector('input');
+    if (select.value === "OTHER") { div.classList.remove('hidden'); input.required = true; }
+    else { div.classList.add('hidden'); input.required = false; }
+}
 
-    document.getElementById('orderForm').onsubmit = async function(e) {
-        e.preventDefault();
-        document.getElementById('subBtn').innerText = "جاري الحفظ...";
-        const data = Object.fromEntries(new FormData(this));
+function setDelivery(type) {
+    document.getElementById('delivery_type').value = type;
+    document.getElementById('homeOpt').classList.toggle('active', type === 'adomicile');
+    document.getElementById('deskOpt').classList.toggle('active', type === 'stop desk');
+    document.getElementById('locationFields').classList.remove('hidden');
+    const wSelect = document.getElementById('wilaya');
+    wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
+    [...new Set(data.map(r => r[1]))].sort().forEach(w => wSelect.add(new Option(w, w)));
+}
 
-        try {
-            // استخدام رابط نسبي ليعمل على الرابط الحقيقي تلقائياً
-            const res = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            });
-            if (res.ok) {
-                document.getElementById('form-content').style.display = 'none';
-                document.getElementById('success-box').style.display = 'block';
-            }
-        } catch (err) { alert("خطأ في الاتصال بالخادم"); }
+function initCommunes() {
+    const type = document.getElementById('delivery_type').value;
+    const w = document.getElementById('wilaya').value;
+    const cSelect = document.getElementById('commune');
+    cSelect.innerHTML = '<option value="">-- اختر المنطقة --</option>';
+    if(!w) return;
+    let filtered = (type === "stop desk")
+        ? [...new Set(data.filter(r => r[1] === w && r[3].toLowerCase().includes("agence")).map(r => r[2]))].sort()
+        : [...new Set(data.filter(r => r[1] === w).map(r => r[2]))].sort();
+    filtered.forEach(c => cSelect.add(new Option(c, c)));
+}
+
+function initOffices() {
+    const type = document.getElementById('delivery_type').value;
+    const w = document.getElementById('wilaya').value;
+    const c = document.getElementById('commune').value;
+    const oSelect = document.getElementById('office');
+    const oDiv = document.getElementById('officeDiv');
+    if (type === "stop desk" && c) {
+        oSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
+        const offices = data.filter(r => r[1] === w && r[2] === c && r[3].toLowerCase().includes("agence"));
+        if(offices.length > 0) { oDiv.classList.remove('hidden'); offices.forEach(r => { let opt = new Option(r[3], r[3]); opt.dataset.id = r[0]; oSelect.add(opt); }); }
+    } else { oDiv.classList.add('hidden'); }
+}
+
+function setOfficeId() {
+    const o = document.getElementById('office');
+    document.getElementById('stopdesk_id').value = o.options[o.selectedIndex].dataset.id || "";
+}
+
+document.getElementById('orderForm').onsubmit = async function(e) {
+    e.preventDefault();
+    const b = document.getElementById('btn');
+    const msgDiv = document.getElementById('msg');
+    b.disabled = true; b.innerText = "جاري الإرسال...";
+    
+    let finalModel = this.model_select.value === "OTHER" ? document.getElementById('custom_model').value : this.model_select.value;
+    let finalSize = this.size_select.value === "OTHER" ? document.getElementById('custom_size').value : this.size_select.value;
+    let colorVal = this.color_select.value;
+    let finalColor = colorVal === "OTHER" ? document.getElementById('custom_color').value : (colorVal.includes(" - ") ? colorVal.split(" - ")[0] : colorVal);
+
+    let descParts = [finalModel.trim(), finalColor.trim(), finalSize.trim()];
+    if(document.getElementById('allow_opening').checked) descParts.push("مسموح الفتح");
+    const finalDesc = descParts.filter(p => p !== "").join(" * ");
+
+    const payload = {
+        firstname: this.firstname.value,
+        familyname: this.familyname.value,
+        phone: this.phone.value,
+        delivery_type: this.delivery_type.value,
+        wilaya: this.wilaya.value,
+        commune: this.commune.value,
+        stopdesk_id: this.stopdesk_id.value,
+        description: finalDesc
     };
+
+    try {
+        const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.text();
+        msgDiv.innerText = result;
+        this.reset();
+        ['custom_model_div', 'custom_color_div', 'custom_size_div', 'locationFields'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        document.querySelectorAll('.option-card').forEach(el => el.classList.remove('active'));
+    } catch (err) {
+        msgDiv.innerText = "خطأ في الاتصال بالسيرفر";
+    } finally {
+        b.disabled = false;
+        b.innerText = "+ تأكيد طلبية جديدة";
+        setTimeout(() => { msgDiv.innerText = ""; }, 5000);
+    }
+};
 </script>
 </body>
-
 </html>
-
