@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
 // !!! ضع رابط الـ Web App الخاص بك من جوجل هنا !!!
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwz2DACu31o49XSSF4NwPCkKPCxnTibsU4tIa89vhCkU7crU6tGJqLPyjlTYgOWc_QGeQ/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyS0zxaAdIjQylIhPA1oAcI59I2GaE5dIOXP5mvKUptXMjMvE2pHnVDIdn9f63BQFyyLQ/exec';
 
 // مسار جلب بيانات الولايات والبلديات (Yalidine Data)
 app.get('/api/yalidine-data', async (req, res) => {
@@ -58,3 +58,4 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
     console.log(`🚀 السيرفر يعمل الآن على المنفذ ${PORT}`);
 });
+
