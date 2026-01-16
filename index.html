@@ -85,6 +85,14 @@
         .hidden { display: none !important; }
         
         .custom-input { margin-top: -5px; border-color: var(--accent); background: #fff; }
+        
+        /* تنسيق زر الواتساب */
+        .whatsapp-btn {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 15px; background: #25d366; color: white;
+            border: none; border-radius: 12px; font-size: 1.1rem; font-weight: bold;
+            cursor: pointer; text-decoration: none; margin-top: 15px;
+        }
     </style>
 </head>
 <body>
@@ -143,7 +151,12 @@
     <div id="success-box" class="hidden" style="text-align:center; padding:40px">
         <h2 style="color:var(--success)">✅ تم استلام طلبك بنجاح!</h2>
         <p>سنتصل بك لتأكيد التفاصيل قريباً.</p>
-        <button class="start-btn" onclick="location.reload()" style="font-size: 1rem; padding: 10px 25px;">طلب جديد</button>
+        
+        <a id="whatsappLink" href="#" target="_blank" class="whatsapp-btn">
+            🟢 أرسل الطلب عبر الواتساب لتسريع التأكيد
+        </a>
+
+        <button class="start-btn" onclick="location.reload()" style="font-size: 1rem; padding: 10px 25px; margin-top: 20px; background: #666;">طلب جديد</button>
     </div>
 </div>
 
@@ -154,9 +167,9 @@
     const modelImages = {
         "Noor": "https://i.ibb.co/sJwGWZ44/NOOR.jpg",
         "Rihanna": "https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp",
-        "Ghazelle": "https://i.ibb.co/LXbPT7qB/GHAZELLE-BLAC.jpg",
+        "Ghazelle": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp",
         "Miral": "https://i.ibb.co/fz608WG7/MIRAL-PERLE.jpg",
-        "Hiba": "https://i.ibb.co/Z6MdXgKG/HIBA.jpg",
+        "Hiba": "https://i.ibb.co/FbmcMJvt/RAHAF-VERT-DEAU.jpg",
         "Rahaf": "https://i.ibb.co/FbmcMJvt/RAHAF-VERT-DEAU.jpg",
         "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
     };
@@ -240,15 +253,12 @@
         document.getElementById('deskBtn').className = 'choice-btn' + (type === 'stop desk' ? ' active' : '');
         document.getElementById('locationFields').classList.remove('hidden');
         document.getElementById('officeDiv').classList.add('hidden');
-        
         const wSelect = document.getElementById('wilaya');
         wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
-        
         let filteredData = yalidineData;
         if (type === 'stop desk') {
             filteredData = yalidineData.filter(r => r[3] && r[3].trim() !== "");
         }
-        
         const uniqueW = [...new Set(filteredData.map(r => r[1]))].sort();
         uniqueW.forEach(w => wSelect.add(new Option(w, w)));
         document.getElementById('commune').innerHTML = '<option value="">-- اختر البلدية --</option>';
@@ -259,12 +269,10 @@
         const type = document.getElementById('delivery_type').value;
         const cSelect = document.getElementById('commune');
         cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
-        
         let filtered = yalidineData.filter(r => r[1] === w);
         if (type === 'stop desk') {
             filtered = filtered.filter(r => r[3] && r[3].trim() !== "");
         }
-        
         const uniqueC = [...new Set(filtered.map(r => r[2]))].sort();
         uniqueC.forEach(c => cSelect.add(new Option(c, c)));
         document.getElementById('officeDiv').classList.add('hidden');
@@ -299,14 +307,12 @@
             const m = box.querySelector('.m-select').value;
             const colorSelect = box.querySelector('.c-select');
             const sizeSelect = box.querySelector('.s-select');
-            
             const color = colorSelect.value === "لون آخر" ? colorSelect.nextElementSibling.value : colorSelect.value;
             const size = sizeSelect.value === "مقاس آخر" ? sizeSelect.nextElementSibling.value : sizeSelect.value;
-            
             details.push(`${m} (${color} - ${size})`);
         });
 
-        const fullDescription = details.join(" + ") + " (مسموح الفتح)";
+        const fullDesc = details.join(" + ") + " (مسموح الفتح)";
 
         const payload = {
             firstname: this.firstname.value,
@@ -316,8 +322,12 @@
             wilaya: this.wilaya.value,
             commune: this.commune.value,
             stopdesk_id: this.delivery_type.value === 'stop desk' ? this.office_id.value : '',
-            description: fullDescription
+            description: fullDesc
         };
+
+        // تجهيز رابط الواتساب
+        const waMsg = `طلب جديد من: ${payload.firstname} ${payload.familyname}%0Aالهاتف: ${payload.phone}%0Aالموديلات: ${fullDesc}%0Aالولاية: ${payload.wilaya}%0Aالبلدية: ${payload.commune}`;
+        document.getElementById('whatsappLink').href = `https://wa.me/213770000000?text=${waMsg}`; // غير الرقم هنا
 
         try {
             const res = await fetch('/api/orders', {
@@ -336,4 +346,3 @@
 </script>
 </body>
 </html>
-
