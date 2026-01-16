@@ -43,13 +43,24 @@
         }
         .header-form { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 15px; }
         .header-form img { width: 80px; }
-        .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 20px 0 15px; border-bottom: 1px dashed #e0e0e0; }
+        .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 25px 0 15px; border-bottom: 1px dashed #e0e0e0; }
         .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
         .input-row > * { flex: 1; }
-        input, select { padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; width: 100%; font-size: 1rem; }
         
-        .model-box { background: #f0f4f8; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; position: relative; }
-        .remove-model { position: absolute; top: 10px; left: 10px; color: red; font-weight: bold; cursor: pointer; }
+        /* تحسين التباعد لمنع التداخل */
+        input, select { 
+            padding: 15px; 
+            border: 2px solid #cbd5e1; 
+            border-radius: 12px; 
+            width: 100%; 
+            font-size: 1rem; 
+            margin-bottom: 10px; /* إضافة مسافة سفلية لكل عنصر */
+            background-color: white;
+            display: block;
+        }
+        
+        .model-box { background: #f0f4f8; padding: 15px; border-radius: 20px; margin-bottom: 25px; border: 1px solid #e2e8f0; position: relative; }
+        .remove-model { position: absolute; top: 10px; left: 15px; color: #dc2626; font-weight: bold; cursor: pointer; background: white; border-radius: 50%; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
         .choice-btn-group { display: flex; gap: 12px; margin: 20px 0; }
         .choice-btn {
@@ -60,8 +71,9 @@
         
         .allowed-badge { background: #fff8e1; color: #b7791f; padding: 12px; border-radius: 12px; text-align: center; font-weight: bold; border: 1px dashed #f6ad55; margin-bottom: 15px; }
 
-        .add-more-btn { width: 100%; padding: 12px; background: #eee; border: 2px dashed #666; border-radius: 12px; cursor: pointer; margin-bottom: 20px; font-weight: bold; color: var(--primary); }
-        
+        .add-more-btn { width: 100%; padding: 15px; background: #eee; border: 2px dashed #666; border-radius: 12px; cursor: pointer; margin-bottom: 20px; font-weight: bold; color: var(--primary); transition: 0.3s; }
+        .add-more-btn:hover { background: #e2e8f0; }
+
         .submit-btn {
             width: 100%; padding: 18px; background: var(--success); color: white;
             border: none; border-radius: 12px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
@@ -103,13 +115,12 @@
 
             <div class="section-title">👗 الموديلات المختارة</div>
             
-            <div id="models-list">
-                </div>
+            <div id="models-list"></div>
 
             <button type="button" class="add-more-btn" onclick="addNewModel()">➕ إضافة موديل آخر للطلبية</button>
 
             <div class="section-title">🚚 الشحن</div>
-            <div class="allowed-badge">✅ مسموح بفتح الطرد والتأكد من المقاس والجودة قبل الدفع</div>
+            <div class="allowed-badge">✅ مسموح بفتح الطرد ومعاينته قبل الدفع</div>
             
             <div class="choice-btn-group">
                 <div class="choice-btn" id="homeBtn" onclick="setDelivery('adomicile')">🏠 توصيل منزلي</div>
@@ -119,8 +130,10 @@
 
             <div id="locationFields" class="hidden">
                 <select name="wilaya" id="wilaya" onchange="initCommunes()" required></select>
-                <select name="commune" id="commune" style="margin-top:10px" onchange="initOffices()" required></select>
-                <div id="officeDiv" class="hidden"><select id="office" style="margin-top:10px" onchange="setOfficeId()"></select></div>
+                <select name="commune" id="commune" onchange="initOffices()" required></select>
+                <div id="officeDiv" class="hidden">
+                    <select id="office" name="office_name"></select>
+                </div>
             </div>
 
             <button type="submit" class="submit-btn" id="subBtn" style="margin-top:20px">تأكيد الطلبية</button>
@@ -162,7 +175,7 @@
         modelDiv.className = 'model-box';
         modelDiv.id = `model_item_${modelCounter}`;
         modelDiv.innerHTML = `
-            ${modelCounter > 1 ? `<span class="remove-model" onclick="removeModel(${modelCounter})">حذف ✖</span>` : ''}
+            ${modelCounter > 1 ? `<span class="remove-model" onclick="removeModel(${modelCounter})">✖</span>` : ''}
             <div class="img-display-area" id="img_display_${modelCounter}">
                 <p style="color: #999;">اختر المودال</p>
             </div>
@@ -172,7 +185,7 @@
                 <option value="Miral">Miral</option><option value="Hiba">Hiba</option>
                 <option value="Rihanna">Rihanna</option><option value="Rahaf">Rahaf</option>
             </select>
-            <div class="input-row" style="margin-top:10px">
+            <div class="input-row">
                 <select class="c-select" required>
                     <option value="">-- اللون --</option>
                     ${allColors.map(c => `<option value="${c}">${c}</option>`).join('')}
@@ -197,7 +210,7 @@
     }
 
     window.onload = async () => {
-        addNewModel(); // إضافة الموديل الأول تلقائياً
+        addNewModel(); 
         try {
             const res = await fetch('/api/yalidine-data');
             yalidineData = await res.json();
@@ -210,6 +223,9 @@
         document.getElementById('deskBtn').className = 'choice-btn' + (type === 'stop desk' ? ' active' : '');
         document.getElementById('locationFields').classList.remove('hidden');
         
+        // إخفاء/إظهار حقل المكتب بناءً على الاختيار
+        document.getElementById('officeDiv').classList.add('hidden');
+
         const wSelect = document.getElementById('wilaya');
         wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
         const uniqueW = [...new Set(yalidineData.map(r => r[1]))].sort();
@@ -222,6 +238,33 @@
         cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
         const filtered = yalidineData.filter(r => r[1] === w);
         [...new Set(filtered.map(r => r[2]))].sort().forEach(c => cSelect.add(new Option(c, c)));
+    }
+
+    function initOffices() {
+        const type = document.getElementById('delivery_type').value;
+        if (type !== 'stop desk') return;
+
+        const w = document.getElementById('wilaya').value;
+        const c = document.getElementById('commune').value;
+        const oSelect = document.getElementById('office');
+        const oDiv = document.getElementById('officeDiv');
+
+        // تصفية المكاتب بناءً على الولاية والبلدية
+        const offices = yalidineData.filter(r => r[1] === w && r[2] === c);
+        
+        if (offices.length > 0) {
+            oSelect.innerHTML = '<option value="">-- اختر مكتب ياليدين --</option>';
+            offices.forEach(off => {
+                // بافتراض أن اسم المكتب موجود في العمود الرابع (index 3)
+                const officeName = off[3] || "مكتب ياليدين الرئيسي";
+                oSelect.add(new Option(officeName, officeName));
+            });
+            oDiv.classList.remove('hidden');
+            oSelect.required = true;
+        } else {
+            oDiv.classList.add('hidden');
+            oSelect.required = false;
+        }
     }
 
     document.getElementById('orderForm').onsubmit = async function(e) {
@@ -244,6 +287,7 @@
             delivery_type: this.delivery_type.value,
             wilaya: this.wilaya.value,
             commune: this.commune.value,
+            office: this.office ? this.office.value : '',
             description: details.join(" + ")
         };
 
