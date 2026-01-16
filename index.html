@@ -43,24 +43,24 @@
         }
         .header-form { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 15px; }
         .header-form img { width: 80px; }
-        .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 25px 0 15px; border-bottom: 1px dashed #e0e0e0; }
+        .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 20px 0 15px; border-bottom: 1px dashed #e0e0e0; }
+        
         .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
         .input-row > * { flex: 1; }
         
-        /* تحسين التباعد لمنع التداخل */
+        /* تحسين المسافات لمنع التداخل */
         input, select { 
             padding: 15px; 
             border: 2px solid #cbd5e1; 
             border-radius: 12px; 
             width: 100%; 
             font-size: 1rem; 
-            margin-bottom: 10px; /* إضافة مسافة سفلية لكل عنصر */
-            background-color: white;
-            display: block;
+            margin-bottom: 12px; /* مسافة ثابتة تحت كل عنصر */
+            box-sizing: border-box;
         }
         
-        .model-box { background: #f0f4f8; padding: 15px; border-radius: 20px; margin-bottom: 25px; border: 1px solid #e2e8f0; position: relative; }
-        .remove-model { position: absolute; top: 10px; left: 15px; color: #dc2626; font-weight: bold; cursor: pointer; background: white; border-radius: 50%; width: 25px; height: 25px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .model-box { background: #f0f4f8; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; position: relative; }
+        .remove-model { position: absolute; top: 10px; left: 10px; color: red; font-weight: bold; cursor: pointer; }
         
         .choice-btn-group { display: flex; gap: 12px; margin: 20px 0; }
         .choice-btn {
@@ -71,9 +71,8 @@
         
         .allowed-badge { background: #fff8e1; color: #b7791f; padding: 12px; border-radius: 12px; text-align: center; font-weight: bold; border: 1px dashed #f6ad55; margin-bottom: 15px; }
 
-        .add-more-btn { width: 100%; padding: 15px; background: #eee; border: 2px dashed #666; border-radius: 12px; cursor: pointer; margin-bottom: 20px; font-weight: bold; color: var(--primary); transition: 0.3s; }
-        .add-more-btn:hover { background: #e2e8f0; }
-
+        .add-more-btn { width: 100%; padding: 12px; background: #eee; border: 2px dashed #666; border-radius: 12px; cursor: pointer; margin-bottom: 20px; font-weight: bold; color: var(--primary); }
+        
         .submit-btn {
             width: 100%; padding: 18px; background: var(--success); color: white;
             border: none; border-radius: 12px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
@@ -120,7 +119,7 @@
             <button type="button" class="add-more-btn" onclick="addNewModel()">➕ إضافة موديل آخر للطلبية</button>
 
             <div class="section-title">🚚 الشحن</div>
-            <div class="allowed-badge">✅ مسموح بفتح الطرد ومعاينته قبل الدفع</div>
+            <div class="allowed-badge">✅ مسموح بفتح الطرد والتأكد من المقاس والجودة قبل الدفع</div>
             
             <div class="choice-btn-group">
                 <div class="choice-btn" id="homeBtn" onclick="setDelivery('adomicile')">🏠 توصيل منزلي</div>
@@ -132,7 +131,7 @@
                 <select name="wilaya" id="wilaya" onchange="initCommunes()" required></select>
                 <select name="commune" id="commune" onchange="initOffices()" required></select>
                 <div id="officeDiv" class="hidden">
-                    <select id="office" name="office_name"></select>
+                    <select id="office" name="office_name" style="margin-top:10px"></select>
                 </div>
             </div>
 
@@ -151,6 +150,7 @@
     let modelCounter = 0;
     let yalidineData = [];
     
+    // قائمة الصور الكاملة كما أردتها
     const modelImages = {
         "Noor": "https://i.ibb.co/sJwGWZ44/NOOR.jpg",
         "Rihanna": "https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp",
@@ -161,7 +161,9 @@
         "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
     };
 
+    // قائمة الألوان الكاملة (14 لون)
     const allColors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "لون آخر"];
+    // قائمة المقاسات الكاملة مع 48
     const allSizes = ["36", "38", "40", "42", "44", "46", "48", "مقاس آخر"];
 
     function openApp() {
@@ -175,7 +177,7 @@
         modelDiv.className = 'model-box';
         modelDiv.id = `model_item_${modelCounter}`;
         modelDiv.innerHTML = `
-            ${modelCounter > 1 ? `<span class="remove-model" onclick="removeModel(${modelCounter})">✖</span>` : ''}
+            ${modelCounter > 1 ? `<span class="remove-model" onclick="removeModel(${modelCounter})">حذف ✖</span>` : ''}
             <div class="img-display-area" id="img_display_${modelCounter}">
                 <p style="color: #999;">اختر المودال</p>
             </div>
@@ -222,10 +224,8 @@
         document.getElementById('homeBtn').className = 'choice-btn' + (type === 'adomicile' ? ' active' : '');
         document.getElementById('deskBtn').className = 'choice-btn' + (type === 'stop desk' ? ' active' : '');
         document.getElementById('locationFields').classList.remove('hidden');
-        
-        // إخفاء/إظهار حقل المكتب بناءً على الاختيار
         document.getElementById('officeDiv').classList.add('hidden');
-
+        
         const wSelect = document.getElementById('wilaya');
         wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
         const uniqueW = [...new Set(yalidineData.map(r => r[1]))].sort();
@@ -243,22 +243,15 @@
     function initOffices() {
         const type = document.getElementById('delivery_type').value;
         if (type !== 'stop desk') return;
-
         const w = document.getElementById('wilaya').value;
         const c = document.getElementById('commune').value;
         const oSelect = document.getElementById('office');
         const oDiv = document.getElementById('officeDiv');
-
-        // تصفية المكاتب بناءً على الولاية والبلدية
         const offices = yalidineData.filter(r => r[1] === w && r[2] === c);
         
         if (offices.length > 0) {
-            oSelect.innerHTML = '<option value="">-- اختر مكتب ياليدين --</option>';
-            offices.forEach(off => {
-                // بافتراض أن اسم المكتب موجود في العمود الرابع (index 3)
-                const officeName = off[3] || "مكتب ياليدين الرئيسي";
-                oSelect.add(new Option(officeName, officeName));
-            });
+            oSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
+            offices.forEach(off => oSelect.add(new Option(off[3] || "مكتب ياليدين", off[3])));
             oDiv.classList.remove('hidden');
             oSelect.required = true;
         } else {
