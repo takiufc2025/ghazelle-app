@@ -7,266 +7,63 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #003366; /* لون أزرق داكن مستوحى من الزليج */
-            --accent: #3b82f6; /* أزرق فاتح مبهج */
-            --success: #10b981; /* أخضر للنجاح */
-            --white: rgba(255, 255, 255, 0.96); /* أبيض شبه شفاف للخلفية */
-            --light-bg: #f8fafc; /* خلفية فاتحة للعناصر */
+            --primary: #003366;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --white: rgba(255, 255, 255, 0.96);
+            --light-bg: #f8fafc;
         }
         body, html {
-            margin: 0;
-            padding: 0;
+            margin: 0; padding: 0;
             font-family: 'Cairo', sans-serif;
-            height: 100%;
-            width: 100%;
+            height: 100%; width: 100%;
             overflow-x: hidden;
         }
-        
         .bg-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://output.googleusercontent.com/static/image_generation_content/0/generated_image.webp') center/cover no-repeat;
-            z-index: -1;
-            filter: brightness(0.7);
+            background: url('https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp') center/cover no-repeat;
+            z-index: -1; filter: brightness(0.4);
         }
-
         #welcome-screen {
             position: fixed; width: 100%; height: 100vh;
-            background: rgba(0, 20, 40, 0.88);
+            background: rgba(0, 20, 40, 0.92);
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            color: white; z-index: 1000;
-            transition: transform 0.8s ease-in-out;
+            color: white; z-index: 1000; transition: transform 0.8s ease-in-out;
         }
-
-        .welcome-logo {
-            width: 120px;
-            height: auto;
-            margin-bottom: 25px;
-            animation: fadeIn 1s ease-out;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
+        .welcome-logo { width: 150px; height: auto; margin-bottom: 25px; }
         .start-btn {
-            padding: 18px 50px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.4rem;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4);
-            transition: all 0.3s ease;
+            padding: 18px 50px; background: var(--accent); color: white;
+            border: none; border-radius: 50px; font-size: 1.4rem; font-weight: bold;
+            cursor: pointer; box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4); transition: all 0.3s;
         }
-        .start-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
-        }
-
         .main-container {
-            max-width: 500px;
-            margin: 40px auto;
-            padding: 30px;
-            background: var(--white);
-            border-radius: 25px;
-            display: none;
+            max-width: 500px; margin: 40px auto; padding: 30px;
+            background: var(--white); border-radius: 25px; display: none;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            animation: slideUp 0.6s ease;
         }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header-form {
-            text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 15px;
-        }
-        .header-form img {
-            width: 80px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-        .header-form h2 {
-            color: var(--primary);
-            font-size: 1.8rem;
-            margin: 0;
-            line-height: 1.2;
-        }
-        .header-form p {
-            color: #666;
-            font-size: 0.9rem;
-            margin: 5px 0 0;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 20px;
-            padding-bottom: 8px;
-            border-bottom: 1px dashed #e0e0e0;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
+        .header-form { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 15px; }
+        .header-form img { width: 80px; }
+        .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 20px 0 15px; border-bottom: 1px dashed #e0e0e0; }
+        .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
         .input-row > * { flex: 1; }
-
-        input, select {
-            padding: 15px;
-            border: 2px solid #cbd5e1;
-            border-radius: 12px;
-            width: 100%;
-            font-family: inherit;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.3s ease;
-        }
-        input:focus, select:focus {
-            border-color: var(--accent);
-            outline: none;
-        }
-
-        .custom-input {
-            margin-top: 10px;
-            border-color: var(--accent);
-            background: var(--light-bg);
-        }
-
-        .choice-btn-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-            margin-bottom: 25px;
-        }
+        input, select { padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; width: 100%; font-size: 1rem; }
+        .choice-btn-group { display: flex; gap: 12px; margin: 20px 0; }
         .choice-btn {
-            flex: 1;
-            padding: 18px;
-            border: 2px solid #cbd5e1;
-            border-radius: 15px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: bold;
-            background: var(--light-bg);
-            color: var(--primary);
-            transition: all 0.3s ease;
+            flex: 1; padding: 15px; border: 2px solid #cbd5e1; border-radius: 15px;
+            text-align: center; cursor: pointer; font-weight: bold; background: var(--light-bg);
         }
-        .choice-btn:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-        .choice-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
-        }
-
+        .choice-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         .submit-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--success);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 25px;
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-            transition: all 0.3s ease;
+            width: 100%; padding: 18px; background: var(--success); color: white;
+            border: none; border-radius: 12px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
         }
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .hidden { display: none !important; }
-
-        .success-box {
-            text-align: center;
-            padding: 40px;
-            display: none;
-            animation: fadeIn 0.8s ease-out;
-        }
-        .success-box .icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: bounce 0.8s infinite alternate;
-        }
-        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
-        .success-box h3 {
-            color: var(--success);
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-        .success-box p {
-            color: #555;
-            font-size: 1.1rem;
-        }
-
-        .allow-box {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            padding: 12px 15px;
-            background: var(--light-bg);
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .allow-box:hover {
-            border-color: var(--accent);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        .allow-box input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            min-width: 20px;
-            accent-color: var(--success);
-            cursor: pointer;
-        }
-        .allow-box label {
-            font-weight: bold;
-            color: var(--primary);
-            cursor: pointer;
-            margin: 0;
-            flex-grow: 1;
-        }
-        
-        /* إضافة ستايل لعرض الصورة */
         #model-image-display {
-            text-align: center;
-            margin-top: 15px;
-            margin-bottom: 25px;
-            min-height: 200px; /* لضمان عدم اهتزاز التصميم */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f0f4f8;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            text-align: center; margin: 15px 0; min-height: 250px;
+            display: flex; justify-content: center; align-items: center;
+            background: #f0f4f8; border-radius: 15px; overflow: hidden;
         }
-        #model-image-display img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 10px;
-            object-fit: contain; /* للحفاظ على نسبة الأبعاد */
-            transition: transform 0.3s ease-in-out;
-        }
-        #model-image-display img.active {
-            transform: scale(1.02);
-        }
+        #model-image-display img { max-width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -274,251 +71,140 @@
 <div class="bg-overlay"></div>
 
 <div id="welcome-screen">
-    <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Ghazelle Logo" class="welcome-logo">
-    <h1 style="font-size: 2.5rem; margin-bottom: 15px;">مرحباً بك في عالم GHAZELLE</h1>
-    <p style="margin-bottom: 40px; font-size: 1.1rem; color: rgba(255,255,255,0.8);">تصاميمنا تجمع بين الأصالة الجزائرية والعصرنة الراقية</p>
+    <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Logo" class="welcome-logo">
+    <h1>مرحباً بك في عالم GHAZELLE</h1>
+    <p>تصاميم تجمع بين الأصالة الجزائرية والعصرنة</p>
     <button class="start-btn" onclick="openApp()">تقديم طلب جديد</button>
 </div>
 
 <div class="main-container" id="app-form">
     <div id="form-content">
         <div class="header-form">
-            <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Ghazelle Logo">
-            <h2>استمارة طلبية GHAZELLE</h2>
-            <p>املأ البيانات أدناه لتأكيد طلبيتك.</p>
+            <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Logo">
+            <h2>استمارة الطلب</h2>
         </div>
 
         <form id="orderForm">
-            <div class="section-title">👤 معلومات الزبون</div>
+            <div class="section-title">👤 المعلومات الشخصية</div>
             <div class="input-row">
                 <input type="text" name="firstname" placeholder="الاسم" required>
                 <input type="text" name="familyname" placeholder="اللقب" required>
             </div>
-            <input type="tel" name="phone" placeholder="رقم الهاتف" style="margin-bottom:25px;" required>
+            <input type="tel" name="phone" placeholder="رقم الهاتف" required>
 
-            <div class="section-title">👗 تفاصيل الطلبية</div>
+            <div class="section-title">👗 تفاصيل الموديل</div>
             
             <div id="model-image-display">
-                </div>
-
-            <div class="input-row">
-                <select name="model_select" id="model_select" onchange="handleModelChange(this)" required>
-                    <option value="">-- اختر المودال --</option>
-                    <option value="Noor">Noor</option>
-                    <option value="Ghazelle">Ghazelle</option>
-                    <option value="Miral">Miral</option>
-                    <option value="Hiba">Hiba</option>
-                    <option value="Miral perlé">Miral perlé</option>
-                    <option value="Rihanna">Rihanna</option>
-                    <option value="Rahaf">Rahaf</option>
-                    <option value="OTHER">إضافة مودال آخر...</option>
-                </select>
-                <div id="custom_model_div" class="hidden"><input type="text" id="custom_model" class="custom-input" placeholder="اكتب اسم المودال الجديد"></div>
+                <p style="color: #999;">اختر مودالاً لعرض صورته</p>
             </div>
 
-            <div class="input-row" style="margin-top: 15px;">
-                <select name="color_select" id="color_select" onchange="toggleCustom(this, 'custom_color_div')" required>
-                    <option value="">-- اختر اللون --</option>
-                    <option value="Rouge - أحمر">Rouge - أحمر</option><option value="Blue - أزرق">Blue - أزرق</option><option value="Vert - أخضر">Vert - أخضر</option>
-                    <option value="Noir - أسود">Noir - أسود</option><option value="Blanc - أبيض">Blanc - أبيض</option><option value="Rose - وردي">Rose - وردي</option>
-                    <option value="Marron - بني">Marron - بني</option><option value="Beige - بيج">Beige - بيج</option><option value="Doré - ذهبي">Doré - ذهبي</option>
-                    <option value="Argenté - فضي">Argenté - فضي</option><option value="Blue clair - أزرق فاتح">Blue clair - أزرق فاتح</option><option value="Blue roi - أزرق ملكي">Blue roi - أزرق ملكي</option>
-                    <option value="Vert foncé - أخضر غامق">Vert foncé - أخضر غامق</option><option value="Vert olive - أخضر زيتوني">Vert olive - أخضر زيتوني</option><option value="Vert d'eau - أخضر مائي">Vert d'eau - أخضر مائي</option>
-                    <option value="Blanc cassé - أبيض كاسي">Blanc cassé - أبيض كاسي</option><option value="OTHER">لون غير موجود...</option>
-                </select>
-                <div id="custom_color_div" class="hidden"><input type="text" id="custom_color" class="custom-input" placeholder="اكتب اللون (FR)"></div>
-            </div>
+            <select name="model_select" id="model_select" onchange="handleModelChange(this)" required>
+                <option value="">-- اختر المودال --</option>
+                <option value="Noor">Noor</option>
+                <option value="Ghazelle">Ghazelle</option>
+                <option value="Miral">Miral</option>
+                <option value="Hiba">Hiba</option>
+                <option value="Rihanna">Rihanna</option>
+                <option value="Rahaf">Rahaf</option>
+                <option value="OTHER">إضافة مودال آخر...</option>
+            </select>
+            <div id="custom_model_div" class="hidden"><input type="text" id="custom_model" style="margin-top:10px" placeholder="اسم المودال الجديد"></div>
 
-            <div class="input-row" style="margin-top: 15px;">
-                <select name="size_select" id="size_select" onchange="toggleCustom(this, 'custom_size_div')" required>
+            <div class="input-row" style="margin-top:15px">
+                <select name="color_select" id="color_select" required>
+                    <option value="">-- اللون --</option>
+                    <option value="أحمر">أحمر</option><option value="أزرق">أزرق</option><option value="أسود">أسود</option><option value="أبيض">أبيض</option>
+                </select>
+                <select name="size_select" id="size_select" required>
                     <option value="">-- المقاس --</option>
                     <option value="36">36</option><option value="38">38</option><option value="40">40</option><option value="42">42</option>
-                    <option value="44">44</option><option value="46">46</option><option value="48">48</option>
-                    <option value="OTHER">آخر...</option>
                 </select>
-                <div id="custom_size_div" class="hidden"><input type="text" id="custom_size" class="custom-input" placeholder="أدخل المقاس"></div>
             </div>
 
-            <div class="allow-box">
-                <input type="checkbox" id="allow_opening">
-                <label for="allow_opening">✅ مسموح بفتح الطرد عند الاستلام</label>
-            </div>
-
-            <div class="section-title">🚚 خيارات الشحن</div>
+            <div class="section-title">🚚 الشحن</div>
             <div class="choice-btn-group">
-                <div class="choice-btn" id="homeBtn" onclick="setDelivery('adomicile')">🏠<br>توصيل منزلي</div>
-                <div class="choice-btn" id="deskBtn" onclick="setDelivery('stop desk')">🏢<br>مكتب ياليدين</div>
+                <div class="choice-btn" id="homeBtn" onclick="setDelivery('adomicile')">🏠 توصيل منزلي</div>
+                <div class="choice-btn" id="deskBtn" onclick="setDelivery('stop desk')">🏢 مكتب ياليدين</div>
             </div>
             <input type="hidden" name="delivery_type" id="delivery_type" required>
 
             <div id="locationFields" class="hidden">
-                <select name="wilaya" id="wilaya" style="margin-top:15px;" onchange="initCommunes()" required>
-                    <option value="">-- اختر الولاية --</option>
-                </select>
-                <select name="commune" id="commune" style="margin-top:15px;" onchange="initOffices()" required>
-                    <option value="">-- اختر البلدية --</option>
-                </select>
-                <div id="officeDiv" class="hidden"><select id="office" style="margin-top:15px;" onchange="setOfficeId()"></select></div>
+                <select name="wilaya" id="wilaya" onchange="initCommunes()" required></select>
+                <select name="commune" id="commune" style="margin-top:10px" onchange="initOffices()" required></select>
+                <div id="officeDiv" class="hidden"><select id="office" style="margin-top:10px" onchange="setOfficeId()"></select></div>
             </div>
-            <input type="hidden" name="stopdesk_id" id="stopdesk_id">
 
-            <button type="submit" class="submit-btn" id="subBtn">تأكيد الطلبية</button>
-            <div id="msg" style="text-align: center; margin-top: 20px; font-weight: bold; color: var(--success);"></div>
+            <button type="submit" class="submit-btn" id="subBtn" style="margin-top:20px">تأكيد الطلبية</button>
+            <div id="msg" style="text-align:center; margin-top:15px"></div>
         </form>
     </div>
-    <div id="success-box" class="success-box">
-        <div class="icon">✅</div>
-        <h3>شكراً على ثقتك!</h3>
-        <p>تم استلام طلبك بنجاح. سيتم التواصل معك قريباً.</p>
+
+    <div id="success-box" class="hidden" style="text-align:center; padding:40px">
+        <h2 style="color:var(--success)">✅ تم استلام طلبك!</h2>
+        <p>سنتصل بك لتأكيد الطلبية قريباً.</p>
     </div>
 </div>
 
 <script>
     let yalidineData = [];
-
-    // ** !!! قم بتحديث هذا الكائن بروابط صور موديلاتك !!! **
+    // روابط الصور المصححة
     const modelImages = {
-        "Noor": "<img src="https://i.ibb.co/sJwGWZ44/NOOR.jpg" alt="NOOR" border="0">", // مثال: استبدل بالرابط الفعلي
-        "Ghazelle": "https://i.ibb.co/Ghazelle-Image.webp",
-        "Miral": "https://i.ibb.co/Miral-Image.webp",
-        "Hiba": "https://i.ibb.co/Hiba-Image.webp",
-        "Miral perlé": "https://i.ibb.co/MiralPerle-Image.webp",
-        "Rihanna": "<a href="<a href="https://ibb.co/ZRmLy2PK"><img src="https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp" alt="IMG-20250720-202052-133" border="0"></a>",
-        "Rahaf": "https://i.ibb.co/Rahaf-Image.webp",
-        "DEFAULT": "https://i.ibb.co/Default-Image.webp" // صورة افتراضية عند عدم الاختيار أو موديل غير موجود
+        "Noor": "https://i.ibb.co/sJwGWZ44/NOOR.jpg",
+        "Rihanna": "https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp",
+        "Ghazelle": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp",
+        "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
     };
-
 
     function openApp() {
         document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
-        setTimeout(() => {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('app-form').style.display = 'block';
-        }, 600);
+        setTimeout(() => { document.getElementById('app-form').style.display = 'block'; }, 600);
     }
 
     window.onload = async () => {
         try {
-            const response = await fetch('/api/yalidine-data');
-            yalidineData = await response.json();
-            console.log("Yalidine Data loaded successfully.");
-        } catch (e) {
-            console.error("Error loading Yalidine data:", e);
-        }
+            const res = await fetch('/api/yalidine-data');
+            yalidineData = await res.json();
+        } catch (e) { console.error("Data error", e); }
     };
 
-    // دالة جديدة للتعامل مع تغيير اختيار الموديل وعرض الصورة
-    function handleModelChange(selectElement) {
-        toggleCustom(selectElement, 'custom_model_div'); // للحفاظ على وظيفة OTHER
-        const modelName = selectElement.value;
-        const imageDisplayDiv = document.getElementById('model-image-display');
+    function handleModelChange(select) {
+        const model = select.value;
+        const display = document.getElementById('model-image-display');
+        document.getElementById('custom_model_div').classList.toggle('hidden', model !== 'OTHER');
         
-        let imageUrl = modelImages[modelName] || modelImages["DEFAULT"];
-        
-        // إذا كان الموديل "OTHER" أو لم يتم اختيار شيء، نخفي الصورة
-        if (modelName === "" || modelName === "OTHER") {
-            imageDisplayDiv.innerHTML = '';
+        if (model && model !== 'OTHER') {
+            const url = modelImages[model] || modelImages["DEFAULT"];
+            display.innerHTML = `<img src="${url}" alt="${model}">`;
         } else {
-            imageDisplayDiv.innerHTML = `<img src="${imageUrl}" alt="${modelName}" class="active">`;
+            display.innerHTML = '<p style="color: #999;">اختر مودالاً لعرض صورته</p>';
         }
-    }
-
-    function toggleCustom(select, divId) {
-        const div = document.getElementById(divId);
-        const input = div.querySelector('input');
-        if (select.value === "OTHER") { div.classList.remove('hidden'); input.required = true; }
-        else { div.classList.add('hidden'); input.required = false; }
     }
 
     function setDelivery(type) {
         document.getElementById('delivery_type').value = type;
         document.getElementById('homeBtn').classList.toggle('active', type === 'adomicile');
         document.getElementById('deskBtn').classList.toggle('active', type === 'stop desk');
-        
         document.getElementById('locationFields').classList.remove('hidden');
-
-        const wilayaSelect = document.getElementById('wilaya');
-        wilayaSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
-        if (yalidineData.length > 0) {
-            const uniqueWilayas = [...new Set(yalidineData.map(r => r[1]))].sort();
-            uniqueWilayas.forEach(w => wilayaSelect.add(new Option(w, w)));
-        } else {
-            wilayaSelect.add(new Option('الجزائر', 'الجزائر'));
-            wilayaSelect.add(new Option('وهران', 'وهران'));
-            wilayaSelect.add(new Option('قسنطينة', 'قسنطينة'));
-        }
         
-        document.getElementById('commune').innerHTML = '<option value="">-- اختر البلدية --</option>';
-        document.getElementById('officeDiv').classList.add('hidden');
+        const wSelect = document.getElementById('wilaya');
+        wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
+        const uniqueW = [...new Set(yalidineData.map(r => r[1]))].sort();
+        uniqueW.forEach(w => wSelect.add(new Option(w, w)));
     }
 
     function initCommunes() {
-        const type = document.getElementById('delivery_type').value;
-        const selectedWilaya = document.getElementById('wilaya').value;
-        const communeSelect = document.getElementById('commune');
-        communeSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
-        if(!selectedWilaya) return;
-        
-        if (yalidineData.length > 0) {
-            let filteredCommunes = (type === "stop desk")
-                ? [...new Set(yalidineData.filter(r => r[1] === selectedWilaya && r[3].toLowerCase().includes("agence")).map(r => r[2]))].sort()
-                : [...new Set(yalidineData.filter(r => r[1] === selectedWilaya).map(r => r[2]))].sort();
-            filteredCommunes.forEach(c => communeSelect.add(new Option(c, c)));
-        } else {
-            if (selectedWilaya === 'الجزائر') {
-                communeSelect.add(new Option('الجزائر الوسطى', 'الجزائر الوسطى'));
-                communeSelect.add(new Option('باب الزوار', 'باب الزوار'));
-            }
-        }
-        document.getElementById('officeDiv').classList.add('hidden');
+        const w = document.getElementById('wilaya').value;
+        const cSelect = document.getElementById('commune');
+        cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
+        const filtered = yalidineData.filter(r => r[1] === w);
+        [...new Set(filtered.map(r => r[2]))].sort().forEach(c => cSelect.add(new Option(c, c)));
     }
 
-    function initOffices() {
-        const type = document.getElementById('delivery_type').value;
-        const selectedWilaya = document.getElementById('wilaya').value;
-        const selectedCommune = document.getElementById('commune').value;
-        const officeSelect = document.getElementById('office');
-        const officeDiv = document.getElementById('officeDiv');
-
-        if (type === "stop desk" && selectedCommune && yalidineData.length > 0) {
-            officeSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
-            const offices = yalidineData.filter(r => r[1] === selectedWilaya && r[2] === selectedCommune && r[3].toLowerCase().includes("agence"));
-            if(offices.length > 0) {
-                officeDiv.classList.remove('hidden');
-                offices.forEach(r => {
-                    let opt = new Option(r[3], r[3]);
-                    opt.dataset.id = r[0];
-                    officeSelect.add(opt);
-                });
-            } else {
-                officeDiv.classList.add('hidden');
-            }
-        } else {
-            officeDiv.classList.add('hidden');
-        }
-    }
-
-    function setOfficeId() {
-        const officeSelect = document.getElementById('office');
-        document.getElementById('stopdesk_id').value = officeSelect.options[officeSelect.selectedIndex].dataset.id || "";
-    }
-
+    // كود الإرسال للسيرفر (نفس المنطق السابق مع التأكد من الحقول)
     document.getElementById('orderForm').onsubmit = async function(e) {
         e.preventDefault();
-        const submitBtn = document.getElementById('subBtn');
-        const msgDiv = document.getElementById('msg');
-        submitBtn.disabled = true;
-        submitBtn.innerText = "جاري الإرسال...";
-        msgDiv.innerText = "";
-
-        let finalModel = this.model_select.value === "OTHER" ? document.getElementById('custom_model').value : this.model_select.value;
-        let finalSize = this.size_select.value === "OTHER" ? document.getElementById('custom_size').value : this.size_select.value;
-        let colorVal = this.color_select.value;
-        let finalColor = colorVal === "OTHER" ? document.getElementById('custom_color').value : (colorVal.includes(" - ") ? colorVal.split(" - ")[0] : colorVal);
-
-        let descParts = [finalModel.trim(), finalColor.trim(), finalSize.trim()];
-        if(document.getElementById('allow_opening').checked) descParts.push("مسموح الفتح");
-        const finalDesc = descParts.filter(p => p !== "").join(" * ");
+        const btn = document.getElementById('subBtn');
+        btn.disabled = true; btn.innerText = "جاري الإرسال...";
 
         const payload = {
             firstname: this.firstname.value,
@@ -527,38 +213,21 @@
             delivery_type: this.delivery_type.value,
             wilaya: this.wilaya.value,
             commune: this.commune.value,
-            stopdesk_id: this.stopdesk_id.value,
-            description: finalDesc
+            description: `${this.model_select.value} - ${this.color_select.value} - ${this.size_select.value}`
         };
 
         try {
-            const response = await fetch('/api/orders', {
+            const res = await fetch('/api/orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-
-            if (response.ok) {
-                document.getElementById('form-content').style.display = 'none';
-                document.getElementById('success-box').style.display = 'block';
-                this.reset();
-                ['custom_model_div', 'custom_color_div', 'custom_size_div', 'locationFields', 'officeDiv'].forEach(id => document.getElementById(id).classList.add('hidden'));
-                document.querySelectorAll('.choice-btn').forEach(el => el.classList.remove('active'));
-                document.getElementById('model-image-display').innerHTML = ''; // إخفاء الصورة بعد الإرسال
-            } else {
-                const errorText = await response.text();
-                msgDiv.innerText = `حدث خطأ: ${errorText}`;
-                msgDiv.style.color = 'red';
+            if (res.ok) {
+                document.getElementById('form-content').classList.add('hidden');
+                document.getElementById('success-box').classList.remove('hidden');
             }
-        } catch (err) {
-            msgDiv.innerText = "خطأ في الاتصال بالخادم. يرجى المحاولة لاحقاً.";
-            msgDiv.style.color = 'red';
-            console.error(err);
-        } finally {
-            submitBtn.disabled = false;
-            submitBtn.innerText = "تأكيد الطلبية";
-            setTimeout(() => { msgDiv.innerText = ""; }, 5000);
-        }
+        } catch (err) { alert("خطأ في الإرسال"); }
+        btn.disabled = false; btn.innerText = "تأكيد الطلبية";
     };
 </script>
 </body>
