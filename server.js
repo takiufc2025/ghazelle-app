@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
 // ضع رابط الويب أب الجديد هنا بعد عمل Deploy
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVohOusjinmnh6zp4HxKWERaZ8OZZN52NPDT1LN8rlTYqzTgcAqnPDFSmkefCC4_E1Sw/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHc6BXYrF4ePKnxTxQZE4trmonIchjIl01EoLX1pSMcimslFvK2pzhwsK8KcJh-Yi-/exec';
 
 app.post('/api/orders', async (req, res) => {
     try {
@@ -49,3 +49,4 @@ app.get('*', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`🚀 السيرفر يعمل على المنفذ ${PORT}`));
+
