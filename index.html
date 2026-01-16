@@ -260,13 +260,11 @@
         const oSelect = document.getElementById('office');
         const oDiv = document.getElementById('officeDiv');
         
-        // جلب المكاتب المتوفرة (العمود الرابع الاسم، والعمود الأول ID)
         const offices = yalidineData.filter(r => r[1] === w && r[2] === c && r[3] && r[3].trim() !== "");
         
         if (offices.length > 0) {
             oSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
             offices.forEach(off => {
-                // نضع الرقم (off[0]) كقيمة للخيار والاسم (off[3]) كنص معروض
                 oSelect.add(new Option(off[3], off[0])); 
             });
             oDiv.classList.remove('hidden');
@@ -290,6 +288,9 @@
             details.push(`${m} (${c} - ${s})`);
         });
 
+        // إضافة مسموح الفتح إلى الوصف
+        const fullDescription = details.join(" + ") + " (مسموح الفتح)";
+
         const payload = {
             firstname: this.firstname.value,
             familyname: this.familyname.value,
@@ -297,9 +298,8 @@
             delivery_type: this.delivery_type.value,
             wilaya: this.wilaya.value,
             commune: this.commune.value,
-            // إرسال رقم المكتب تحت مسمى stopdesk_id
             stopdesk_id: this.delivery_type.value === 'stop desk' ? this.office_id.value : '',
-            description: details.join(" + ")
+            description: fullDescription
         };
 
         try {
