@@ -86,7 +86,7 @@
         
         .custom-input { margin-top: -5px; border-color: var(--accent); background: #fff; }
         
-        /* تنسيق زر الواتساب */
+        /* ميزة الواتساب المضافة فقط */
         .whatsapp-btn {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             width: 100%; padding: 15px; background: #25d366; color: white;
@@ -325,10 +325,6 @@
             description: fullDesc
         };
 
-        // تجهيز رابط الواتساب
-        const waMsg = `طلب جديد من: ${payload.firstname} ${payload.familyname}%0Aالهاتف: ${payload.phone}%0Aالموديلات: ${fullDesc}%0Aالولاية: ${payload.wilaya}%0Aالبلدية: ${payload.commune}`;
-        document.getElementById('whatsappLink').href = `https://wa.me/213551655113?text=${waMsg}`; // غير الرقم هنا
-
         try {
             const res = await fetch('/api/orders', {
                 method: 'POST',
@@ -336,6 +332,10 @@
                 body: JSON.stringify(payload)
             });
             if (res.ok) {
+                // تجهيز رابط الواتساب فقط عند النجاح
+                const waMsg = `طلب جديد: ${payload.firstname} ${payload.familyname}%0Aالهاتف: ${payload.phone}%0Aالموديلات: ${fullDesc}%0Aالولاية: ${payload.wilaya}`;
+                document.getElementById('whatsappLink').href = `https://wa.me/213551655113?text=${waMsg}`;
+                
                 document.getElementById('form-content').classList.add('hidden');
                 document.getElementById('success-box').classList.remove('hidden');
                 window.scrollTo(0,0);
@@ -346,4 +346,3 @@
 </script>
 </body>
 </html>
-
