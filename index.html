@@ -85,8 +85,8 @@
         .hidden { display: none !important; }
         
         .custom-input { margin-top: -5px; border-color: var(--accent); background: #fff; }
-        
-        /* ميزة الواتساب المضافة فقط */
+
+        /* تنسيق زر الواتساب */
         .whatsapp-btn {
             display: flex; align-items: center; justify-content: center; gap: 10px;
             width: 100%; padding: 15px; background: #25d366; color: white;
@@ -253,12 +253,15 @@
         document.getElementById('deskBtn').className = 'choice-btn' + (type === 'stop desk' ? ' active' : '');
         document.getElementById('locationFields').classList.remove('hidden');
         document.getElementById('officeDiv').classList.add('hidden');
+        
         const wSelect = document.getElementById('wilaya');
         wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
+        
         let filteredData = yalidineData;
         if (type === 'stop desk') {
             filteredData = yalidineData.filter(r => r[3] && r[3].trim() !== "");
         }
+        
         const uniqueW = [...new Set(filteredData.map(r => r[1]))].sort();
         uniqueW.forEach(w => wSelect.add(new Option(w, w)));
         document.getElementById('commune').innerHTML = '<option value="">-- اختر البلدية --</option>';
@@ -269,10 +272,12 @@
         const type = document.getElementById('delivery_type').value;
         const cSelect = document.getElementById('commune');
         cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
+        
         let filtered = yalidineData.filter(r => r[1] === w);
         if (type === 'stop desk') {
             filtered = filtered.filter(r => r[3] && r[3].trim() !== "");
         }
+        
         const uniqueC = [...new Set(filtered.map(r => r[2]))].sort();
         uniqueC.forEach(c => cSelect.add(new Option(c, c)));
         document.getElementById('officeDiv').classList.add('hidden');
@@ -307,12 +312,14 @@
             const m = box.querySelector('.m-select').value;
             const colorSelect = box.querySelector('.c-select');
             const sizeSelect = box.querySelector('.s-select');
+            
             const color = colorSelect.value === "لون آخر" ? colorSelect.nextElementSibling.value : colorSelect.value;
             const size = sizeSelect.value === "مقاس آخر" ? sizeSelect.nextElementSibling.value : sizeSelect.value;
+            
             details.push(`${m} (${color} - ${size})`);
         });
 
-        const fullDesc = details.join(" + ") + " (مسموح الفتح)";
+        const fullDescription = details.join(" + ") + " (مسموح الفتح)";
 
         const payload = {
             firstname: this.firstname.value,
@@ -322,8 +329,12 @@
             wilaya: this.wilaya.value,
             commune: this.commune.value,
             stopdesk_id: this.delivery_type.value === 'stop desk' ? this.office_id.value : '',
-            description: fullDesc
+            description: fullDescription
         };
+
+        // تجهيز رابط الواتساب ببيانات الطلب
+        const waMsg = `طلب جديد: ${payload.firstname} ${payload.familyname}%0Aالهاتف: ${payload.phone}%0Aالموديلات: ${fullDescription}%0Aالولاية: ${payload.wilaya}`;
+        document.getElementById('whatsappLink').href = `https://wa.me/213770000000?text=${waMsg}`;
 
         try {
             const res = await fetch('/api/orders', {
@@ -332,10 +343,6 @@
                 body: JSON.stringify(payload)
             });
             if (res.ok) {
-                // تجهيز رابط الواتساب فقط عند النجاح
-                const waMsg = `طلب جديد: ${payload.firstname} ${payload.familyname}%0Aالهاتف: ${payload.phone}%0Aالموديلات: ${fullDesc}%0Aالولاية: ${payload.wilaya}`;
-                document.getElementById('whatsappLink').href = `https://wa.me/213551655113?text=${waMsg}`;
-                
                 document.getElementById('form-content').classList.add('hidden');
                 document.getElementById('success-box').classList.remove('hidden');
                 window.scrollTo(0,0);
