@@ -19,28 +19,26 @@
             font-family: 'Cairo', sans-serif;
             height: 100%;
             width: 100%;
-            overflow-x: hidden; /* لمنع شريط التمرير الأفقي */
+            overflow-x: hidden;
         }
         
-        /* الخلفية بزخرفة الزليج */
         .bg-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: url('https://output.googleusercontent.com/static/image_generation_content/0/generated_image.webp') center/cover no-repeat;
             z-index: -1;
-            filter: brightness(0.7); /* لجعل الخلفية أغمق قليلاً والتركيز على الواجهة */
+            filter: brightness(0.7);
         }
 
-        /* شاشة الترحيب */
         #welcome-screen {
             position: fixed; width: 100%; height: 100vh;
-            background: rgba(0, 20, 40, 0.88); /* خلفية داكنة جداً */
+            background: rgba(0, 20, 40, 0.88);
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             color: white; z-index: 1000;
-            transition: transform 0.8s ease-in-out; /* حركة انتقالية ناعمة */
+            transition: transform 0.8s ease-in-out;
         }
 
         .welcome-logo {
-            width: 120px; /* حجم أكبر للشعار في شاشة الترحيب */
+            width: 120px;
             height: auto;
             margin-bottom: 25px;
             animation: fadeIn 1s ease-out;
@@ -53,7 +51,7 @@
             background: var(--accent);
             color: white;
             border: none;
-            border-radius: 50px; /* زر دائري الشكل */
+            border-radius: 50px;
             font-size: 1.4rem;
             font-weight: bold;
             cursor: pointer;
@@ -65,16 +63,15 @@
             box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
         }
 
-        /* التصميم الرئيسي للنموذج */
         .main-container {
             max-width: 500px;
             margin: 40px auto;
             padding: 30px;
             background: var(--white);
             border-radius: 25px;
-            display: none; /* مخفية في البداية */
+            display: none;
             box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-            animation: slideUp 0.6s ease; /* حركة ظهور ناعمة */
+            animation: slideUp 0.6s ease;
         }
 
         @keyframes slideUp {
@@ -116,10 +113,10 @@
 
         .input-row {
             display: flex;
-            gap: 12px; /* مسافة بين الحقول */
+            gap: 12px;
             margin-bottom: 15px;
         }
-        .input-row > * { flex: 1; } /* لجعل الحقول تتوزع بالتساوي */
+        .input-row > * { flex: 1; }
 
         input, select {
             padding: 15px;
@@ -128,7 +125,7 @@
             width: 100%;
             font-family: inherit;
             font-size: 1rem;
-            box-sizing: border-box; /* لتضمين الحشوة والحدود ضمن العرض */
+            box-sizing: border-box;
             transition: border-color 0.3s ease;
         }
         input:focus, select:focus {
@@ -195,7 +192,7 @@
         .success-box {
             text-align: center;
             padding: 40px;
-            display: none; /* مخفية في البداية */
+            display: none;
             animation: fadeIn 0.8s ease-out;
         }
         .success-box .icon {
@@ -214,7 +211,6 @@
             font-size: 1.1rem;
         }
 
-        /* لخيارات السماح بفتح الطرد */
         .allow-box {
             display: flex;
             align-items: center;
@@ -235,16 +231,41 @@
         .allow-box input[type="checkbox"] {
             width: 20px;
             height: 20px;
-            min-width: 20px; /* لضمان حجم ثابت */
-            accent-color: var(--success); /* لون علامة الصح */
+            min-width: 20px;
+            accent-color: var(--success);
             cursor: pointer;
         }
         .allow-box label {
             font-weight: bold;
             color: var(--primary);
             cursor: pointer;
-            margin: 0; /* إزالة الهامش الافتراضي */
-            flex-grow: 1; /* لتأخذ باقي المساحة */
+            margin: 0;
+            flex-grow: 1;
+        }
+        
+        /* إضافة ستايل لعرض الصورة */
+        #model-image-display {
+            text-align: center;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            min-height: 200px; /* لضمان عدم اهتزاز التصميم */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f4f8;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        #model-image-display img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 10px;
+            object-fit: contain; /* للحفاظ على نسبة الأبعاد */
+            transition: transform 0.3s ease-in-out;
+        }
+        #model-image-display img.active {
+            transform: scale(1.02);
         }
     </style>
 </head>
@@ -276,11 +297,20 @@
             <input type="tel" name="phone" placeholder="رقم الهاتف" style="margin-bottom:25px;" required>
 
             <div class="section-title">👗 تفاصيل الطلبية</div>
+            
+            <div id="model-image-display">
+                </div>
+
             <div class="input-row">
-                <select name="model_select" id="model_select" onchange="toggleCustom(this, 'custom_model_div')" required>
+                <select name="model_select" id="model_select" onchange="handleModelChange(this)" required>
                     <option value="">-- اختر المودال --</option>
-                    <option value="Noor">Noor</option><option value="Ghazelle">Ghazelle</option><option value="Miral">Miral</option>
-                    <option value="Hiba">Hiba</option><option value="Miral perlé">Miral perlé</option><option value="Rihanna">Rihanna</option><option value="Rahaf">Rahaf</option>
+                    <option value="Noor">Noor</option>
+                    <option value="Ghazelle">Ghazelle</option>
+                    <option value="Miral">Miral</option>
+                    <option value="Hiba">Hiba</option>
+                    <option value="Miral perlé">Miral perlé</option>
+                    <option value="Rihanna">Rihanna</option>
+                    <option value="Rahaf">Rahaf</option>
                     <option value="OTHER">إضافة مودال آخر...</option>
                 </select>
                 <div id="custom_model_div" class="hidden"><input type="text" id="custom_model" class="custom-input" placeholder="اكتب اسم المودال الجديد"></div>
@@ -344,9 +374,21 @@
 </div>
 
 <script>
-    let yalidineData = []; // تم تغيير الاسم لتجنب التعارض
+    let yalidineData = [];
 
-    // وظيفة لفتح التطبيق بعد شاشة الترحيب
+    // ** !!! قم بتحديث هذا الكائن بروابط صور موديلاتك !!! **
+    const modelImages = {
+        "Noor": "<img src="https://i.ibb.co/sJwGWZ44/NOOR.jpg" alt="NOOR" border="0">", // مثال: استبدل بالرابط الفعلي
+        "Ghazelle": "https://i.ibb.co/Ghazelle-Image.webp",
+        "Miral": "https://i.ibb.co/Miral-Image.webp",
+        "Hiba": "https://i.ibb.co/Hiba-Image.webp",
+        "Miral perlé": "https://i.ibb.co/MiralPerle-Image.webp",
+        "Rihanna": "<a href="<a href="https://ibb.co/ZRmLy2PK"><img src="https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp" alt="IMG-20250720-202052-133" border="0"></a>",
+        "Rahaf": "https://i.ibb.co/Rahaf-Image.webp",
+        "DEFAULT": "https://i.ibb.co/Default-Image.webp" // صورة افتراضية عند عدم الاختيار أو موديل غير موجود
+    };
+
+
     function openApp() {
         document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
         setTimeout(() => {
@@ -355,7 +397,6 @@
         }, 600);
     }
 
-    // جلب بيانات ياليدين عند تحميل الصفحة
     window.onload = async () => {
         try {
             const response = await fetch('/api/yalidine-data');
@@ -366,7 +407,22 @@
         }
     };
 
-    // وظيفة إظهار/إخفاء حقول الإدخال المخصصة (مودال، لون، مقاس)
+    // دالة جديدة للتعامل مع تغيير اختيار الموديل وعرض الصورة
+    function handleModelChange(selectElement) {
+        toggleCustom(selectElement, 'custom_model_div'); // للحفاظ على وظيفة OTHER
+        const modelName = selectElement.value;
+        const imageDisplayDiv = document.getElementById('model-image-display');
+        
+        let imageUrl = modelImages[modelName] || modelImages["DEFAULT"];
+        
+        // إذا كان الموديل "OTHER" أو لم يتم اختيار شيء، نخفي الصورة
+        if (modelName === "" || modelName === "OTHER") {
+            imageDisplayDiv.innerHTML = '';
+        } else {
+            imageDisplayDiv.innerHTML = `<img src="${imageUrl}" alt="${modelName}" class="active">`;
+        }
+    }
+
     function toggleCustom(select, divId) {
         const div = document.getElementById(divId);
         const input = div.querySelector('input');
@@ -374,34 +430,28 @@
         else { div.classList.add('hidden'); input.required = false; }
     }
 
-    // وظيفة تحديد نوع التوصيل (منزلي أو مكتب)
     function setDelivery(type) {
         document.getElementById('delivery_type').value = type;
         document.getElementById('homeBtn').classList.toggle('active', type === 'adomicile');
         document.getElementById('deskBtn').classList.toggle('active', type === 'stop desk');
         
-        // إظهار حقول الولاية والبلدية
         document.getElementById('locationFields').classList.remove('hidden');
 
-        // ملء قائمة الولايات
         const wilayaSelect = document.getElementById('wilaya');
         wilayaSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
         if (yalidineData.length > 0) {
-            const uniqueWilayas = [...new Set(yalidineData.map(r => r[1]))].sort(); // r[1] هو عمود الولاية
+            const uniqueWilayas = [...new Set(yalidineData.map(r => r[1]))].sort();
             uniqueWilayas.forEach(w => wilayaSelect.add(new Option(w, w)));
         } else {
-             // إضافة ولايات افتراضية إذا لم يتم تحميل البيانات
             wilayaSelect.add(new Option('الجزائر', 'الجزائر'));
             wilayaSelect.add(new Option('وهران', 'وهران'));
             wilayaSelect.add(new Option('قسنطينة', 'قسنطينة'));
         }
         
-        // إخفاء البلدية والمكتب عند تغيير نوع التوصيل
         document.getElementById('commune').innerHTML = '<option value="">-- اختر البلدية --</option>';
         document.getElementById('officeDiv').classList.add('hidden');
     }
 
-    // وظيفة ملء قائمة البلديات بناءً على الولاية المختارة
     function initCommunes() {
         const type = document.getElementById('delivery_type').value;
         const selectedWilaya = document.getElementById('wilaya').value;
@@ -411,20 +461,18 @@
         
         if (yalidineData.length > 0) {
             let filteredCommunes = (type === "stop desk")
-                ? [...new Set(yalidineData.filter(r => r[1] === selectedWilaya && r[3].toLowerCase().includes("agence")).map(r => r[2]))].sort() // r[2] هو عمود البلدية، r[3] هو عمود المكتب
+                ? [...new Set(yalidineData.filter(r => r[1] === selectedWilaya && r[3].toLowerCase().includes("agence")).map(r => r[2]))].sort()
                 : [...new Set(yalidineData.filter(r => r[1] === selectedWilaya).map(r => r[2]))].sort();
             filteredCommunes.forEach(c => communeSelect.add(new Option(c, c)));
         } else {
-            // إضافة بلديات افتراضية في حالة عدم توفر البيانات
             if (selectedWilaya === 'الجزائر') {
                 communeSelect.add(new Option('الجزائر الوسطى', 'الجزائر الوسطى'));
                 communeSelect.add(new Option('باب الزوار', 'باب الزوار'));
             }
         }
-        document.getElementById('officeDiv').classList.add('hidden'); // إخفاء المكتب عند تغيير البلدية
+        document.getElementById('officeDiv').classList.add('hidden');
     }
 
-    // وظيفة ملء قائمة المكاتب (Stop Desks) إذا كان نوع التوصيل "مكتب"
     function initOffices() {
         const type = document.getElementById('delivery_type').value;
         const selectedWilaya = document.getElementById('wilaya').value;
@@ -434,12 +482,12 @@
 
         if (type === "stop desk" && selectedCommune && yalidineData.length > 0) {
             officeSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
-            const offices = yalidineData.filter(r => r[1] === selectedWilaya && r[2] === selectedCommune && r[3].toLowerCase().includes("agence")); // r[3] هو عمود اسم المكتب
+            const offices = yalidineData.filter(r => r[1] === selectedWilaya && r[2] === selectedCommune && r[3].toLowerCase().includes("agence"));
             if(offices.length > 0) {
                 officeDiv.classList.remove('hidden');
                 offices.forEach(r => {
-                    let opt = new Option(r[3], r[3]); // النص والقيمة هما اسم المكتب
-                    opt.dataset.id = r[0]; // r[0] هو ID المكتب
+                    let opt = new Option(r[3], r[3]);
+                    opt.dataset.id = r[0];
                     officeSelect.add(opt);
                 });
             } else {
@@ -450,22 +498,19 @@
         }
     }
 
-    // وظيفة لتحديد ID المكتب المختار
     function setOfficeId() {
         const officeSelect = document.getElementById('office');
         document.getElementById('stopdesk_id').value = officeSelect.options[officeSelect.selectedIndex].dataset.id || "";
     }
 
-    // معالج إرسال النموذج
     document.getElementById('orderForm').onsubmit = async function(e) {
         e.preventDefault();
         const submitBtn = document.getElementById('subBtn');
         const msgDiv = document.getElementById('msg');
         submitBtn.disabled = true;
         submitBtn.innerText = "جاري الإرسال...";
-        msgDiv.innerText = ""; // مسح الرسائل السابقة
+        msgDiv.innerText = "";
 
-        // جمع بيانات الطلبية
         let finalModel = this.model_select.value === "OTHER" ? document.getElementById('custom_model').value : this.model_select.value;
         let finalSize = this.size_select.value === "OTHER" ? document.getElementById('custom_size').value : this.size_select.value;
         let colorVal = this.color_select.value;
@@ -497,9 +542,9 @@
                 document.getElementById('form-content').style.display = 'none';
                 document.getElementById('success-box').style.display = 'block';
                 this.reset();
-                // إخفاء الحقول المخصصة وحقول الموقع بعد الإرسال الناجح
                 ['custom_model_div', 'custom_color_div', 'custom_size_div', 'locationFields', 'officeDiv'].forEach(id => document.getElementById(id).classList.add('hidden'));
                 document.querySelectorAll('.choice-btn').forEach(el => el.classList.remove('active'));
+                document.getElementById('model-image-display').innerHTML = ''; // إخفاء الصورة بعد الإرسال
             } else {
                 const errorText = await response.text();
                 msgDiv.innerText = `حدث خطأ: ${errorText}`;
