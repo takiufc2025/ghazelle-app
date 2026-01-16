@@ -7,37 +7,35 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// إعدادات الوسائط
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(__dirname));
 
-// !!! ضع رابط الـ Web App الخاص بك من جوجل هنا !!!
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyS0zxaAdIjQylIhPA1oAcI59I2GaE5dIOXP5mvKUptXMjMvE2pHnVDIdn9f63BQFyyLQ/exec';
+// !!! استبدل هذا الرابط بالرابط الذي حصلت عليه بعد النشر (Deploy) من جوجل !!!
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyVohOusjinmnh6zp4HxKWERaZ8OZZN52NPDT1LN8rlTYqzTgcAqnPDFSmkefCC4_E1Sw/exec';
 
-// مسار جلب بيانات الولايات والبلديات (Yalidine Data)
+// مسار جلب الولايات والبلديات من Sheet2
 app.get('/api/yalidine-data', async (req, res) => {
     try {
         const response = await axios.get(`${GOOGLE_SCRIPT_URL}?action=getYalidineData`);
         res.json(response.data);
     } catch (error) {
-        console.error("خطأ في جلب البيانات:", error.message);
+        console.error("Error fetching Yalidine data:", error.message);
         res.status(500).json([]);
     }
 });
 
-// مسار إرسال الطلبيات الجديد
+// مسار استقبال الطلب من الموقع وإرساله إلى Sheet1
 app.post('/api/orders', async (req, res) => {
     try {
-        // ترتيب البيانات لتطابق أعمدة الشيت (من A إلى N)
         const orderData = {
             firstname: req.body.firstname,
             familyname: req.body.familyname,
-            contact_phone: req.body.phone,
+            phone: req.body.phone,
             delivery_type: req.body.delivery_type,
-            to_commune_name: req.body.commune, // تم تعديلها لتطابق حقل البلدية
-            to_wilaya_name: req.body.wilaya,
-            product_list: req.body.description, // الوصف الكامل للموديل واللون والمقاس
+            to_commune_name: req.body.commune, // الربط مع حقل البلدية في الموقع
+            to_wilaya_name: req.body.wilaya,   // الربط مع حقل الولاية في الموقع
+            product_list: req.body.description, // الوصف الكامل للمنتج
             is_stopdesk: req.body.delivery_type === 'stop desk',
             stopdesk_id: req.body.stopdesk_id || ""
         };
@@ -45,17 +43,15 @@ app.post('/api/orders', async (req, res) => {
         const response = await axios.post(GOOGLE_SCRIPT_URL, orderData);
         res.status(200).send("تم تسجيل الطلبية بنجاح");
     } catch (error) {
-        console.error("خطأ في الإرسال إلى جوجل:", error.message);
+        console.error("Order submission error:", error.message);
         res.status(500).send("فشل في إرسال الطلب");
     }
 });
 
-// تقديم ملف index.html
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 السيرفر يعمل الآن على المنفذ ${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
 });
-
