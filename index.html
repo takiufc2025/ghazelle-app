@@ -48,14 +48,13 @@
         .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
         .input-row > * { flex: 1; }
         
-        /* تحسين المسافات لمنع التداخل */
         input, select { 
             padding: 15px; 
             border: 2px solid #cbd5e1; 
             border-radius: 12px; 
             width: 100%; 
             font-size: 1rem; 
-            margin-bottom: 12px; /* مسافة ثابتة تحت كل عنصر */
+            margin-bottom: 12px;
             box-sizing: border-box;
         }
         
@@ -150,7 +149,6 @@
     let modelCounter = 0;
     let yalidineData = [];
     
-    // قائمة الصور الكاملة كما أردتها
     const modelImages = {
         "Noor": "https://i.ibb.co/sJwGWZ44/NOOR.jpg",
         "Rihanna": "https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp",
@@ -161,9 +159,7 @@
         "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
     };
 
-    // قائمة الألوان الكاملة (14 لون)
     const allColors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "لون آخر"];
-    // قائمة المقاسات الكاملة مع 48
     const allSizes = ["36", "38", "40", "42", "44", "46", "48", "مقاس آخر"];
 
     function openApp() {
@@ -228,30 +224,53 @@
         
         const wSelect = document.getElementById('wilaya');
         wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
-        const uniqueW = [...new Set(yalidineData.map(r => r[1]))].sort();
+        
+        // تعديل: تصفية الولايات التي تحتوي على مكاتب إذا كان الخيار "مكتب"
+        let filteredData = yalidineData;
+        if (type === 'stop desk') {
+            filteredData = yalidineData.filter(r => r[3] && r[3].trim() !== "");
+        }
+        
+        const uniqueW = [...new Set(filteredData.map(r => r[1]))].sort();
         uniqueW.forEach(w => wSelect.add(new Option(w, w)));
+        
+        // إعادة تعيين البلدية
+        document.getElementById('commune').innerHTML = '<option value="">-- اختر البلدية --</option>';
     }
 
     function initCommunes() {
         const w = document.getElementById('wilaya').value;
+        const type = document.getElementById('delivery_type').value;
         const cSelect = document.getElementById('commune');
         cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
-        const filtered = yalidineData.filter(r => r[1] === w);
-        [...new Set(filtered.map(r => r[2]))].sort().forEach(c => cSelect.add(new Option(c, c)));
+        
+        // تعديل: تصفية البلديات التي تحتوي على مكاتب إذا كان الخيار "مكتب"
+        let filtered = yalidineData.filter(r => r[1] === w);
+        if (type === 'stop desk') {
+            filtered = filtered.filter(r => r[3] && r[3].trim() !== "");
+        }
+        
+        const uniqueC = [...new Set(filtered.map(r => r[2]))].sort();
+        uniqueC.forEach(c => cSelect.add(new Option(c, c)));
+        
+        document.getElementById('officeDiv').classList.add('hidden');
     }
 
     function initOffices() {
         const type = document.getElementById('delivery_type').value;
         if (type !== 'stop desk') return;
+        
         const w = document.getElementById('wilaya').value;
         const c = document.getElementById('commune').value;
         const oSelect = document.getElementById('office');
         const oDiv = document.getElementById('officeDiv');
-        const offices = yalidineData.filter(r => r[1] === w && r[2] === c);
+        
+        // جلب المكاتب المتوفرة في هذه البلدية
+        const offices = yalidineData.filter(r => r[1] === w && r[2] === c && r[3] && r[3].trim() !== "");
         
         if (offices.length > 0) {
             oSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
-            offices.forEach(off => oSelect.add(new Option(off[3] || "مكتب ياليدين", off[3])));
+            offices.forEach(off => oSelect.add(new Option(off[3], off[3])));
             oDiv.classList.remove('hidden');
             oSelect.required = true;
         } else {
