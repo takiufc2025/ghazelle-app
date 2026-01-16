@@ -327,7 +327,7 @@
 
         // تجهيز رابط الواتساب
         const waMsg = `طلب جديد من: ${payload.firstname} ${payload.familyname}%0Aالهاتف: ${payload.phone}%0Aالموديلات: ${fullDesc}%0Aالولاية: ${payload.wilaya}%0Aالبلدية: ${payload.commune}`;
-        document.getElementById('whatsappLink').href = `https://wa.me/213770000000?text=${waMsg}`; // غير الرقم هنا
+        document.getElementById('whatsappLink').href = `https://wa.me/213551655113?text=${waMsg}`; // غير الرقم هنا
 
         try {
             const res = await fetch('/api/orders', {
@@ -346,3 +346,4 @@
 </script>
 </body>
 </html>
+
