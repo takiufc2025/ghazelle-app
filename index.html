@@ -159,8 +159,8 @@
         "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
     };
 
-    const allColors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "لون آخر"];
-    const allSizes = ["36", "38", "40", "42", "44", "46", "48", "مقاس آخر"];
+    const allColors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "أو اللون"];
+    const allSizes = ["36", "38", "40", "42", "44", "46", "48", "أو المقاس"];
 
     function openApp() {
         document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
@@ -288,7 +288,6 @@
             details.push(`${m} (${c} - ${s})`);
         });
 
-        // إضافة مسموح الفتح إلى الوصف
         const fullDescription = details.join(" + ") + " (مسموح الفتح)";
 
         const payload = {
