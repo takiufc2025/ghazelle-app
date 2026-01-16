@@ -37,7 +37,6 @@
             border: none; border-radius: 50px; font-size: 1.3rem; font-weight: bold;
             cursor: pointer; box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
         }
-
         .main-container {
             max-width: 500px; margin: 20px auto; padding: 25px;
             background: var(--white); border-radius: 20px; display: none;
@@ -45,9 +44,7 @@
         }
         .header-form { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
         .header-form img { width: 70px; }
-        
         .section-title { font-size: 1.1rem; font-weight: 900; color: var(--primary); margin: 20px 0 10px; }
-        
         .model-card {
             background: var(--light-bg); padding: 15px; border-radius: 15px; 
             margin-bottom: 15px; border: 1px solid #ddd;
@@ -58,26 +55,13 @@
             overflow: hidden; border: 1px solid #eee;
         }
         .image-display img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        
         .input-row { display: flex; gap: 10px; margin-bottom: 10px; }
         input, select { padding: 12px; border: 2px solid #cbd5e1; border-radius: 10px; width: 100%; font-family: 'Cairo'; font-size: 1rem; }
-        
-        .add-more-btn {
-            width: 100%; padding: 12px; background: var(--primary); color: white;
-            border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-bottom: 20px;
-        }
-
+        .add-more-btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
         .choice-btn-group { display: flex; gap: 10px; margin: 15px 0; }
-        .choice-btn {
-            flex: 1; padding: 12px; border: 2px solid #cbd5e1; border-radius: 12px;
-            text-align: center; cursor: pointer; font-weight: bold; background: #fff;
-        }
+        .choice-btn { flex: 1; padding: 12px; border: 2px solid #cbd5e1; border-radius: 12px; text-align: center; cursor: pointer; font-weight: bold; background: #fff; }
         .choice-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-
-        .submit-btn {
-            width: 100%; padding: 18px; background: var(--success); color: white;
-            border: none; border-radius: 12px; font-size: 1.4rem; font-weight: 900; cursor: pointer;
-        }
+        .submit-btn { width: 100%; padding: 18px; background: var(--success); color: white; border: none; border-radius: 12px; font-size: 1.4rem; font-weight: 900; cursor: pointer; }
         .hidden { display: none !important; }
         .allow-box { display: flex; align-items: center; gap: 10px; margin: 15px 0; font-weight: bold; color: var(--primary); }
     </style>
@@ -88,37 +72,30 @@
 
 <div id="welcome-screen">
     <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" class="welcome-logo">
-    <h1 style="text-align: center; padding: 0 20px;">أهلاً بك في GHAZELLE COLLECTION</h1>
-    <p>أرقى الموديلات الجزائرية العصرية</p>
+    <h1>أهلاً بك في GHAZELLE</h1>
     <button class="start-btn" onclick="openApp()">ابدأ الطلب الآن</button>
 </div>
 
 <div class="main-container" id="app-form">
     <div id="form-content">
-        <div class="header-form">
-            <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp">
-            <h2>تأكيد الطلبية</h2>
-        </div>
-
+        <div class="header-form"><img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"><h2>تأكيد الطلبية</h2></div>
         <form id="orderForm">
             <div class="section-title">👤 المعلومات الشخصية</div>
             <div class="input-row">
                 <input type="text" name="firstname" placeholder="الاسم" required>
                 <input type="text" name="familyname" placeholder="اللقب" required>
             </div>
-            <input type="tel" name="phone" placeholder="رقم الهاتف (ضروري)" required>
+            <input type="tel" name="phone" placeholder="رقم الهاتف" required>
 
             <div class="section-title">👗 تفاصيل الموديلات</div>
-            
             <div class="model-card">
-                <div id="display1" class="image-display"><p style="color:#999">صورة الموديل المختار</p></div>
+                <div id="display1" class="image-display"><p style="color:#999">اختر مودالاً لعرض الصورة</p></div>
                 <select name="model1" id="model1" onchange="updateImage(this, 'display1')" required>
-                    <option value="">-- اختر الموديل الأول --</option>
+                    <option value="">-- اختر الموديل --</option>
                     <option value="Noor">👗 موديل نور - Noor</option>
                     <option value="Ghazelle">🎀 موديل غزالة - Ghazelle</option>
                     <option value="Miral">⭐ موديل ميرال - Miral</option>
                     <option value="Hiba">🌹 موديل هبة - Hiba</option>
-                    <option value="Miral perlé">💎 ميرال بيرلي - Miral perlé</option>
                     <option value="Rihanna">🌟 موديل ريانا - Rihanna</option>
                     <option value="Rahaf">🍃 موديل رهف - Rahaf</option>
                     <option value="OTHER">➕ موديل آخر...</option>
@@ -126,79 +103,60 @@
                 <div class="input-row" style="margin-top:10px">
                     <select name="color1" required>
                         <option value="">🎨 اللون</option>
-                        <option value="Rouge - أحمر">Rouge - أحمر</option><option value="Noir - أسود">Noir - أسود</option>
-                        <option value="Vert - أخضر">Vert - أخضر</option><option value="Bleu - أزرق">Bleu - أزرق</option>
-                        <option value="Blanc - أبيض">Blanc - أبيض</option><option value="Rose - وردي">Rose - وردي</option>
-                        <option value="Beige - بيج">Beige - بيج</option><option value="Marron - بني">Marron - بني</option>
+                        <option value="أحمر">أحمر</option><option value="أسود">أسود</option><option value="أزرق">أزرق</option><option value="أخضر">أخضر</option><option value="أبيض">أبيض</option><option value="وردي">وردي</option><option value="بيج">بيج</option>
                     </select>
                     <select name="size1" required>
                         <option value="">📏 المقاس</option>
-                        <option value="36">36</option><option value="38">38</option><option value="40">40</option>
-                        <option value="42">42</option><option value="44">44</option><option value="46">46</option>
+                        <option value="36">36</option><option value="38">38</option><option value="40">40</option><option value="42">42</option><option value="44">44</option><option value="46">46</option>
                     </select>
                 </div>
             </div>
 
-            <button type="button" id="addMoreBtn" class="add-more-btn" onclick="showSecondModel()">+ إضافة موديل آخر للطلبية</button>
+            <button type="button" id="addMoreBtn" class="add-more-btn" onclick="showSecondModel()">+ إضافة موديل ثانٍ</button>
 
             <div id="secondModelArea" class="model-card hidden">
                 <div style="display:flex; justify-content:space-between; margin-bottom:10px">
-                    <span style="font-weight:bold; color:var(--primary)">الموديل الثاني:</span>
+                    <span style="font-weight:bold;">الموديل الثاني:</span>
                     <button type="button" onclick="hideSecondModel()" style="color:red; border:none; cursor:pointer">إلغاء ✖</button>
                 </div>
                 <div id="display2" class="image-display"><p style="color:#999">صورة الموديل 2</p></div>
                 <select name="model2" id="model2" onchange="updateImage(this, 'display2')">
                     <option value="">-- اختر الموديل الثاني --</option>
-                    <option value="Noor">👗 موديل نور - Noor</option>
-                    <option value="Ghazelle">🎀 موديل غزالة - Ghazelle</option>
-                    <option value="Miral">⭐ موديل ميرال - Miral</option>
-                    <option value="Hiba">🌹 موديل هبة - Hiba</option>
-                    <option value="Rihanna">🌟 موديل ريانا - Rihanna</option>
+                    <option value="Noor">👗 نور</option><option value="Ghazelle">🎀 غزالة</option><option value="Rihanna">🌟 ريانا</option>
                 </select>
                 <div class="input-row" style="margin-top:10px">
                     <select name="color2">
                         <option value="">🎨 اللون</option>
-                        <option value="Rouge - أحمر">Rouge - أحمر</option><option value="Noir - أسود">Noir - أسود</option>
-                        <option value="Vert - أخضر">Vert - أخضر</option><option value="Bleu - أزرق">Bleu - أزرق</option>
+                        <option value="أحمر">أحمر</option><option value="أسود">أسود</option>
                     </select>
                     <select name="size2">
                         <option value="">📏 المقاس</option>
-                        <option value="36">36</option><option value="38">38</option><option value="40">40</option>
+                        <option value="38">38</option><option value="40">40</option>
                     </select>
                 </div>
             </div>
 
-            <div class="allow-box">
-                <input type="checkbox" id="allow_opening" checked>
-                <label for="allow_opening">✅ مسموح بفتح الطرد عند الاستلام</label>
-            </div>
+            <div class="allow-box"><input type="checkbox" id="allow_opening" checked><label for="allow_opening">✅ مسموح بفتح الطرد</label></div>
 
-            <div class="section-title">🚚 معلومات التوصيل</div>
+            <div class="section-title">🚚 التوصيل</div>
             <div class="choice-btn-group">
                 <div class="choice-btn" id="homeBtn" onclick="setDelivery('adomicile')">🏠 للبيت</div>
-                <div class="choice-btn" id="deskBtn" onclick="setDelivery('stop desk')">🏢 مكتب ياليدين</div>
+                <div class="choice-btn" id="deskBtn" onclick="setDelivery('stop desk')">🏢 المكتب</div>
             </div>
             <input type="hidden" name="delivery_type" id="delivery_type" required>
 
             <div id="locationFields" class="hidden">
-                <select name="wilaya" id="wilaya" onchange="initCommunes()" required>
-                    <option value="">-- اختر الولاية --</option>
-                </select>
-                <select name="commune" id="commune" style="margin-top:10px" onchange="initOffices()" required>
-                    <option value="">-- اختر البلدية --</option>
-                </select>
+                <select name="wilaya" id="wilaya" onchange="initCommunes()" required><option value="">-- الولاية --</option></select>
+                <select name="commune" id="commune" style="margin-top:10px" onchange="initOffices()" required><option value="">-- البلدية --</option></select>
                 <div id="officeDiv" class="hidden"><select id="office" style="margin-top:10px" onchange="setOfficeId()"></select></div>
             </div>
-
             <button type="submit" class="submit-btn" id="subBtn" style="margin-top:20px">تأكيد الطلب</button>
-            <div id="msg" style="text-align:center; margin-top:10px"></div>
         </form>
     </div>
 
     <div id="success-box" class="hidden" style="text-align:center; padding:30px">
-        <h2 style="color:var(--success)">تم الإرسال بنجاح! ✅</h2>
-        <p>شكراً لثقتك في GHAZELLE COLLECTION. سنتصل بك قريباً لتأكيد طلبيتك.</p>
-        <button class="start-btn" onclick="location.reload()" style="margin-top:20px">طلب موديل آخر</button>
+        <h2 style="color:var(--success)">تم الإرسال! ✅</h2>
+        <button class="start-btn" onclick="location.reload()">طلب جديد</button>
     </div>
 </div>
 
@@ -207,7 +165,7 @@
     const modelImages = {
         "Noor": "https://i.ibb.co/sJwGWZ44/NOOR.jpg",
         "Rihanna": "https://i.ibb.co/9mt8RZL2/IMG-20250720-202052-133.webp",
-        "Ghazelle": "<img src="https://i.ibb.co/LXbPT7qB/GHAZELLE-BLAC.jpg",
+        "Ghazelle": "https://i.ibb.co/LXbPT7qB/GHAZELLE-BLAC.jpg",
         "Miral": "https://i.ibb.co/fz608WG7/MIRAL-PERLE.jpg",
         "Hiba": "https://i.ibb.co/FbmcMJvt/RAHAF-VERT-DEAU.jpg",
         "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
@@ -220,25 +178,15 @@
 
     function updateImage(select, displayId) {
         const display = document.getElementById(displayId);
-        const model = select.value;
-        if(model) {
-            const url = modelImages[model] || modelImages["DEFAULT"];
-            display.innerHTML = `<img src="${url}">`;
+        if(select.value) {
+            display.innerHTML = `<img src="${modelImages[select.value] || modelImages.DEFAULT}">`;
         } else {
             display.innerHTML = `<p style="color:#999">صورة الموديل</p>`;
         }
     }
 
-    function showSecondModel() {
-        document.getElementById('secondModelArea').classList.remove('hidden');
-        document.getElementById('addMoreBtn').classList.add('hidden');
-    }
-
-    function hideSecondModel() {
-        document.getElementById('secondModelArea').classList.add('hidden');
-        document.getElementById('addMoreBtn').classList.remove('hidden');
-        document.getElementById('model2').value = "";
-    }
+    function showSecondModel() { document.getElementById('secondModelArea').classList.remove('hidden'); document.getElementById('addMoreBtn').classList.add('hidden'); }
+    function hideSecondModel() { document.getElementById('secondModelArea').classList.add('hidden'); document.getElementById('addMoreBtn').classList.remove('hidden'); }
 
     window.onload = async () => {
         try {
@@ -252,9 +200,8 @@
         document.getElementById('homeBtn').classList.toggle('active', type === 'adomicile');
         document.getElementById('deskBtn').classList.toggle('active', type === 'stop desk');
         document.getElementById('locationFields').classList.remove('hidden');
-        
         const wSelect = document.getElementById('wilaya');
-        wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
+        wSelect.innerHTML = '<option value="">-- الولاية --</option>';
         [...new Set(yalidineData.map(r => r[1]))].sort().forEach(w => wSelect.add(new Option(w, w)));
     }
 
@@ -262,7 +209,7 @@
         const type = document.getElementById('delivery_type').value;
         const w = document.getElementById('wilaya').value;
         const cSelect = document.getElementById('commune');
-        cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
+        cSelect.innerHTML = '<option value="">-- البلدية --</option>';
         let filtered = yalidineData.filter(r => r[1] === w);
         if(type === "stop desk") filtered = filtered.filter(r => r[3].toLowerCase().includes("agence"));
         [...new Set(filtered.map(r => r[2]))].sort().forEach(c => cSelect.add(new Option(c, c)));
@@ -275,15 +222,11 @@
         const oSelect = document.getElementById('office');
         const oDiv = document.getElementById('officeDiv');
         if (type === "stop desk" && c) {
-            oSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
+            oSelect.innerHTML = '<option value="">-- المكتب --</option>';
             const offices = yalidineData.filter(r => r[1] === w && r[2] === c && r[3].toLowerCase().includes("agence"));
             if(offices.length > 0) {
                 oDiv.classList.remove('hidden');
-                offices.forEach(r => {
-                    let opt = new Option(r[3], r[3]);
-                    opt.dataset.id = r[0];
-                    oSelect.add(opt);
-                });
+                offices.forEach(r => { let opt = new Option(r[3], r[3]); opt.dataset.id = r[0]; oSelect.add(opt); });
             }
         } else { oDiv.classList.add('hidden'); }
     }
@@ -297,12 +240,9 @@
         e.preventDefault();
         const btn = document.getElementById('subBtn');
         btn.disabled = true; btn.innerText = "جاري الإرسال...";
-
-        let finalDesc = `الموديل 1: ${this.model1.value} (${this.color1.value}, ${this.size1.value})`;
-        if(this.model2.value) {
-            finalDesc += ` | الموديل 2: ${this.model2.value} (${this.color2.value}, ${this.size2.value})`;
-        }
-        if(document.getElementById('allow_opening').checked) finalDesc += " [مسموح بفتح الطرد]";
+        
+        let desc = `1: ${this.model1.value}-${this.color1.value}-${this.size1.value}`;
+        if(this.model2.value) desc += ` | 2: ${this.model2.value}-${this.color2.value}-${this.size2.value}`;
 
         const payload = {
             firstname: this.firstname.value,
@@ -311,8 +251,8 @@
             delivery_type: this.delivery_type.value,
             wilaya: this.wilaya.value,
             commune: this.commune.value,
-            description: finalDesc,
-            stopdesk_id: document.getElementById('stopdesk_id')?.value || ""
+            description: desc + (document.getElementById('allow_opening').checked ? " [مسموح فتح]" : ""),
+            stopdesk_id: document.getElementById('stopdesk_id').value
         };
 
         try {
@@ -325,12 +265,10 @@
                 document.getElementById('form-content').classList.add('hidden');
                 document.getElementById('success-box').classList.remove('hidden');
             }
-        } catch (err) { alert("حدث خطأ في الاتصال بالسيرفر"); }
+        } catch (err) { alert("خطأ في الاتصال"); }
         btn.disabled = false; btn.innerText = "تأكيد الطلب";
     };
 </script>
-
 <input type="hidden" id="stopdesk_id">
 </body>
 </html>
-
