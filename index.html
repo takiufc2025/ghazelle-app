@@ -334,7 +334,7 @@
         };
 
         // تجهيز رابط الواتساب ببيانات الزبون
-        const waNumber = "213770000000"; // قم بتغيير هذا الرقم إلى رقمك الخاص
+        const waNumber = "213551655113"; // قم بتغيير هذا الرقم إلى رقمك الخاص
         const waMsg = `طلب جديد من: ${payload.firstname} ${payload.familyname}%0Aالهاتف: ${payload.phone}%0Aالولاية: ${payload.wilaya}%0Aالموديلات: ${fullDescription}`;
         document.getElementById('whatsappBtn').href = `https://wa.me/${waNumber}?text=${waMsg}`;
 
@@ -355,3 +355,4 @@
 </script>
 </body>
 </html>
+
