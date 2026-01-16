@@ -1,234 +1,37 @@
-<!DOCTYPE html>
-<html dir="rtl" lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHAZELLE COLLECTION | زليج عصري</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #003366;
-            --accent: #3b82f6;
-            --success: #10b981;
-            --white: rgba(255, 255, 255, 0.96);
-            --light-bg: #f8fafc;
-        }
-        body, html {
-            margin: 0; padding: 0;
-            font-family: 'Cairo', sans-serif;
-            height: 100%; width: 100%;
-            overflow-x: hidden;
-        }
-        .bg-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp') center/cover no-repeat;
-            z-index: -1; filter: brightness(0.4);
-        }
-        #welcome-screen {
-            position: fixed; width: 100%; height: 100vh;
-            background: rgba(0, 20, 40, 0.92);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; 
-            color: white; z-index: 1000; transition: transform 0.8s ease-in-out;
-        }
-        .welcome-logo { width: 150px; height: auto; margin-bottom: 25px; }
-        .start-btn {
-            padding: 18px 50px; background: var(--accent); color: white;
-            border: none; border-radius: 50px; font-size: 1.4rem; font-weight: bold;
-            cursor: pointer; box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4); transition: all 0.3s;
-        }
-        .main-container {
-            max-width: 500px; margin: 40px auto; padding: 30px;
-            background: var(--white); border-radius: 25px; display: none;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        }
-        .header-form { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 15px; }
-        .header-form img { width: 80px; }
-        .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 20px 0 15px; border-bottom: 1px dashed #e0e0e0; }
-        .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
-        .input-row > * { flex: 1; }
-        input, select { padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; width: 100%; font-size: 1rem; }
-        .choice-btn-group { display: flex; gap: 12px; margin: 20px 0; }
-        .choice-btn {
-            flex: 1; padding: 15px; border: 2px solid #cbd5e1; border-radius: 15px;
-            text-align: center; cursor: pointer; font-weight: bold; background: var(--light-bg);
-        }
-        .choice-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
-        .submit-btn {
-            width: 100%; padding: 18px; background: var(--success); color: white;
-            border: none; border-radius: 12px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
-        }
-        #model-image-display {
-            text-align: center; margin: 15px 0; min-height: 250px;
-            display: flex; justify-content: center; align-items: center;
-            background: #f0f4f8; border-radius: 15px; overflow: hidden;
-        }
-        #model-image-display img { max-width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; }
-        .hidden { display: none !important; }
-    </style>
-</head>
-<body>
-
-<div class="bg-overlay"></div>
-
-<div id="welcome-screen">
-    <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Logo" class="welcome-logo">
-    <h1>مرحباً بك في عالم GHAZELLE</h1>
-    <p>تصاميم تجمع بين الأصالة الجزائرية والعصرنة</p>
-    <button class="start-btn" onclick="openApp()">تقديم طلب جديد</button>
-</div>
-
-<div class="main-container" id="app-form">
-    <div id="form-content">
-        <div class="header-form">
-            <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Logo">
-            <h2>استمارة الطلب</h2>
-        </div>
-
-        <form id="orderForm">
-            <div class="section-title">👤 المعلومات الشخصية</div>
-            <div class="input-row">
-                <input type="text" name="firstname" placeholder="الاسم" required>
-                <input type="text" name="familyname" placeholder="اللقب" required>
-            </div>
-            <input type="tel" name="phone" placeholder="رقم الهاتف" required>
-
-            <div class="section-title">👗 تفاصيل الموديل</div>
-            
-            <div id="model-image-display">
-                <p style="color: #999;">اختر مودالاً لعرض صورته</p>
-            </div>
-
-            <select name="model_select" id="model_select" onchange="handleModelChange(this)" required>
-                <option value="">-- اختر المودال --</option>
-                <option value="Noor">Noor</option>
-                <option value="Ghazelle">Ghazelle</option>
-                <option value="Miral">Miral</option>
-                <option value="Hiba">Hiba</option>
-                <option value="Rihanna">Rihanna</option>
-                <option value="Rahaf">Rahaf</option>
-                <option value="OTHER">إضافة مودال آخر...</option>
-            </select>
-            <div id="custom_model_div" class="hidden"><input type="text" id="custom_model" style="margin-top:10px" placeholder="اسم المودال الجديد"></div>
-
-            <div class="input-row" style="margin-top:15px">
-                <select name="color_select" id="color_select" required>
-                    <option value="">-- اللون --</option>
-                    <option value="أحمر">أحمر</option><option value="أزرق">أزرق</option><option value="أسود">أسود</option><option value="أبيض">أبيض</option>
-                </select>
-                <select name="size_select" id="size_select" required>
-                    <option value="">-- المقاس --</option>
-                    <option value="36">36</option><option value="38">38</option><option value="40">40</option><option value="42">42</option>
-                </select>
-            </div>
-
-            <div class="section-title">🚚 الشحن</div>
-            <div class="choice-btn-group">
-                <div class="choice-btn" id="homeBtn" onclick="setDelivery('adomicile')">🏠 توصيل منزلي</div>
-                <div class="choice-btn" id="deskBtn" onclick="setDelivery('stop desk')">🏢 مكتب ياليدين</div>
-            </div>
-            <input type="hidden" name="delivery_type" id="delivery_type" required>
-
-            <div id="locationFields" class="hidden">
-                <select name="wilaya" id="wilaya" onchange="initCommunes()" required></select>
-                <select name="commune" id="commune" style="margin-top:10px" onchange="initOffices()" required></select>
-                <div id="officeDiv" class="hidden"><select id="office" style="margin-top:10px" onchange="setOfficeId()"></select></div>
-            </div>
-
-            <button type="submit" class="submit-btn" id="subBtn" style="margin-top:20px">تأكيد الطلبية</button>
-            <div id="msg" style="text-align:center; margin-top:15px"></div>
-        </form>
+<div class="model-card">
+    <div id="display1" class="image-display">
+        <p style="color:#999; font-size: 0.9rem;">سيظهر شكل الموديل هنا عند اختياره</p>
     </div>
-
-    <div id="success-box" class="hidden" style="text-align:center; padding:40px">
-        <h2 style="color:var(--success)">✅ تم استلام طلبك!</h2>
-        <p>سنتصل بك لتأكيد الطلبية قريباً.</p>
+    
+    <label style="display:block; margin-bottom:8px; font-weight:bold; color:var(--primary);">اختر الموديل:</label>
+    <select name="model1" id="model1" onchange="updateImage(this, 'display1')" required>
+        <option value="">✨ اضغط هنا لاختيار الموديل ✨</option>
+        <option value="Noor">👗 موديل نور - Noor</option>
+        <option value="Ghazelle">🎀 موديل غزالة - Ghazelle</option>
+        <option value="Miral">⭐ موديل ميرال - Miral</option>
+        <option value="Hiba">🌹 موديل هبة - Hiba</option>
+        <option value="Miral perlé">💎 ميرال بيرلي - Miral perlé</option>
+        <option value="Rihanna">🌟 موديل ريانا - Rihanna</option>
+        <option value="Rahaf">🍃 موديل رهف - Rahaf</option>
+        <option value="OTHER">➕ موديل آخر غير موجود...</option>
+    </select>
+    
+    <div class="input-row" style="margin-top:12px">
+        <select name="color1" required>
+            <option value="">🎨 اللون</option>
+            <option value="أحمر">Rouge - أحمر</option>
+            <option value="أسود">Noir - أسود</option>
+            <option value="أخضر">Vert - أخضر</option>
+            <option value="أزرق">Bleu - أزرق</option>
+            <option value="أبيض">Blanc - أبيض</option>
+        </select>
+        <select name="size1" required>
+            <option value="">📏 المقاس</option>
+            <option value="36">36</option>
+            <option value="38">38</option>
+            <option value="40">40</option>
+            <option value="42">42</option>
+            <option value="44">44</option>
+        </select>
     </div>
 </div>
-
-<script>
-    let yalidineData = [];
-    // روابط الصور المصححة
-    const modelImages = {
-        "Noor": "https://i.ibb.co/sJwGWZ44/NOOR.jpg",
-        "Rihanna": "https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp",
-        "Ghazelle": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp",
-        "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
-    };
-
-    function openApp() {
-        document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
-        setTimeout(() => { document.getElementById('app-form').style.display = 'block'; }, 600);
-    }
-
-    window.onload = async () => {
-        try {
-            const res = await fetch('/api/yalidine-data');
-            yalidineData = await res.json();
-        } catch (e) { console.error("Data error", e); }
-    };
-
-    function handleModelChange(select) {
-        const model = select.value;
-        const display = document.getElementById('model-image-display');
-        document.getElementById('custom_model_div').classList.toggle('hidden', model !== 'OTHER');
-        
-        if (model && model !== 'OTHER') {
-            const url = modelImages[model] || modelImages["DEFAULT"];
-            display.innerHTML = `<img src="${url}" alt="${model}">`;
-        } else {
-            display.innerHTML = '<p style="color: #999;">اختر مودالاً لعرض صورته</p>';
-        }
-    }
-
-    function setDelivery(type) {
-        document.getElementById('delivery_type').value = type;
-        document.getElementById('homeBtn').classList.toggle('active', type === 'adomicile');
-        document.getElementById('deskBtn').classList.toggle('active', type === 'stop desk');
-        document.getElementById('locationFields').classList.remove('hidden');
-        
-        const wSelect = document.getElementById('wilaya');
-        wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
-        const uniqueW = [...new Set(yalidineData.map(r => r[1]))].sort();
-        uniqueW.forEach(w => wSelect.add(new Option(w, w)));
-    }
-
-    function initCommunes() {
-        const w = document.getElementById('wilaya').value;
-        const cSelect = document.getElementById('commune');
-        cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
-        const filtered = yalidineData.filter(r => r[1] === w);
-        [...new Set(filtered.map(r => r[2]))].sort().forEach(c => cSelect.add(new Option(c, c)));
-    }
-
-    // كود الإرسال للسيرفر (نفس المنطق السابق مع التأكد من الحقول)
-    document.getElementById('orderForm').onsubmit = async function(e) {
-        e.preventDefault();
-        const btn = document.getElementById('subBtn');
-        btn.disabled = true; btn.innerText = "جاري الإرسال...";
-
-        const payload = {
-            firstname: this.firstname.value,
-            familyname: this.familyname.value,
-            phone: this.phone.value,
-            delivery_type: this.delivery_type.value,
-            wilaya: this.wilaya.value,
-            commune: this.commune.value,
-            description: `${this.model_select.value} - ${this.color_select.value} - ${this.size_select.value}`
-        };
-
-        try {
-            const res = await fetch('/api/orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-            if (res.ok) {
-                document.getElementById('form-content').classList.add('hidden');
-                document.getElementById('success-box').classList.remove('hidden');
-            }
-        } catch (err) { alert("خطأ في الإرسال"); }
-        btn.disabled = false; btn.innerText = "تأكيد الطلبية";
-    };
-</script>
-</body>
-</html>
