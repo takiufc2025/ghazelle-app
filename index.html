@@ -3,212 +3,264 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GHAZELLE COLLECTION - تأكيد الطلب</title>
+    <title>GHAZELLE COLLECTION | زليج عصري</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #002b5c; --accent: #3b82f6; --success: #10b981; }
-        body { font-family: 'Cairo', sans-serif; background-color: #f1f5f9; margin: 0; padding: 10px; direction: rtl; }
-        .container { max-width: 500px; margin: auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); overflow: hidden; }
-        .header { text-align: center; padding: 20px; border-bottom: 2px solid var(--primary); background: #fff; }
-        .header img { width: 100px; }
-        .form-body { padding: 20px; }
+        :root {
+            --primary: #003366;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --white: rgba(255, 255, 255, 0.96);
+            --light-bg: #f8fafc;
+        }
+        body, html {
+            margin: 0; padding: 0;
+            font-family: 'Cairo', sans-serif;
+            height: 100%; width: 100%;
+            overflow-x: hidden;
+        }
+        .bg-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp') center/cover no-repeat;
+            z-index: -1; filter: brightness(0.4);
+        }
+        #welcome-screen {
+            position: fixed; width: 100%; height: 100vh;
+            background: rgba(0, 20, 40, 0.92);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; 
+            color: white; z-index: 1000; transition: transform 0.8s ease-in-out;
+        }
+        .welcome-logo { width: 150px; height: auto; margin-bottom: 25px; }
+        .start-btn {
+            padding: 18px 50px; background: var(--accent); color: white;
+            border: none; border-radius: 50px; font-size: 1.4rem; font-weight: bold;
+            cursor: pointer; box-shadow: 0 5px 20px rgba(59, 130, 246, 0.4); transition: all 0.3s;
+        }
+        .main-container {
+            max-width: 500px; margin: 40px auto; padding: 30px;
+            background: var(--white); border-radius: 25px; display: none;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .header-form { text-align: center; margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 15px; }
+        .header-form img { width: 80px; }
+        .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 20px 0 15px; border-bottom: 1px dashed #e0e0e0; }
+        .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
+        .input-row > * { flex: 1; }
+        input, select { padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; width: 100%; font-size: 1rem; }
         
-        .section-title { color: var(--primary); font-weight: 900; margin: 20px 0 10px; display: flex; align-items: center; gap: 8px; }
-        .model-card { background: #f8fafc; padding: 15px; border-radius: 15px; border: 1px solid #e2e8f0; margin-bottom: 20px; position: relative; }
-        .remove-btn { position: absolute; top: 10px; left: 10px; color: #ef4444; cursor: pointer; font-weight: bold; font-size: 0.9rem; }
+        .model-box { background: #f0f4f8; padding: 15px; border-radius: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; position: relative; }
+        .remove-model { position: absolute; top: 10px; left: 10px; color: red; font-weight: bold; cursor: pointer; }
         
-        .img-preview { width: 100%; height: 220px; background: white; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; border: 1px solid #eee; overflow: hidden; }
-        .img-preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .choice-btn-group { display: flex; gap: 12px; margin: 20px 0; }
+        .choice-btn {
+            flex: 1; padding: 15px; border: 2px solid #cbd5e1; border-radius: 15px;
+            text-align: center; cursor: pointer; font-weight: bold; background: var(--light-bg);
+        }
+        .choice-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
         
-        input, select { width: 100%; padding: 14px; border: 2px solid #cbd5e1; border-radius: 12px; font-family: 'Cairo'; font-size: 1rem; box-sizing: border-box; margin-bottom: 10px; outline: none; transition: 0.3s; }
-        input:focus, select:focus { border-color: var(--accent); }
-        .row { display: flex; gap: 10px; }
+        .allowed-badge { background: #fff8e1; color: #b7791f; padding: 12px; border-radius: 12px; text-align: center; font-weight: bold; border: 1px dashed #f6ad55; margin-bottom: 15px; }
+
+        .add-more-btn { width: 100%; padding: 12px; background: #eee; border: 2px dashed #666; border-radius: 12px; cursor: pointer; margin-bottom: 20px; font-weight: bold; color: var(--primary); }
         
-        .delivery-btn { flex: 1; padding: 15px; border: 2px solid #cbd5e1; border-radius: 12px; text-align: center; cursor: pointer; font-weight: bold; background: white; transition: 0.3s; }
-        .delivery-btn.active { border-color: var(--accent); background: #eff6ff; color: var(--accent); box-shadow: 0 0 10px rgba(59,130,246,0.1); }
-        
-        .allowed-badge { background: #fff3cd; color: #856404; padding: 12px; border-radius: 12px; font-size: 0.95rem; text-align: center; margin: 15px 0; border: 1px dashed #ffeeba; font-weight: bold; }
-        
-        .add-more-btn { width: 100%; padding: 15px; border: 2px dashed var(--primary); border-radius: 12px; background: #f1f5f9; color: var(--primary); font-weight: bold; cursor: pointer; margin-bottom: 20px; font-size: 1rem; }
-        .submit-btn { width: 100%; padding: 20px; background: var(--success); color: white; border: none; border-radius: 15px; font-size: 1.5rem; font-weight: 900; cursor: pointer; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
+        .submit-btn {
+            width: 100%; padding: 18px; background: var(--success); color: white;
+            border: none; border-radius: 12px; font-size: 1.3rem; font-weight: bold; cursor: pointer;
+        }
+        .img-display-area {
+            text-align: center; margin-bottom: 15px; height: 200px;
+            display: flex; justify-content: center; align-items: center;
+            background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #ddd;
+        }
+        .img-display-area img { max-width: 100%; max-height: 200px; object-fit: contain; }
         .hidden { display: none !important; }
-        .custom-input { border-color: var(--accent) !important; background: #f0f7ff !important; margin-top: -5px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Ghazelle Logo">
-        <h2>تأكيد الطلبية</h2>
-    </div>
+<div class="bg-overlay"></div>
 
-    <form class="form-body" id="orderForm">
-        <div class="section-title">👤 المعلومات الشخصية</div>
-        <div class="row">
-            <input type="text" id="fname" placeholder="الاسم" required>
-            <input type="text" id="lname" placeholder="اللقب" required>
+<div id="welcome-screen">
+    <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Logo" class="welcome-logo">
+    <h1>مرحباً بك في عالم GHAZELLE</h1>
+    <p>تصاميم تجمع بين الأصالة الجزائرية والعصرنة</p>
+    <button class="start-btn" onclick="openApp()">تقديم طلب جديد</button>
+</div>
+
+<div class="main-container" id="app-form">
+    <div id="form-content">
+        <div class="header-form">
+            <img src="https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp" alt="Logo">
+            <h2>استمارة الطلب</h2>
         </div>
-        <input type="tel" id="phone" placeholder="رقم الهاتف" required>
 
-        <div class="section-title">👗 الموديلات المختارة</div>
-        <div id="modelsContainer">
+        <form id="orderForm">
+            <div class="section-title">👤 المعلومات الشخصية</div>
+            <div class="input-row">
+                <input type="text" name="firstname" placeholder="الاسم" required>
+                <input type="text" name="familyname" placeholder="اللقب" required>
+            </div>
+            <input type="tel" name="phone" placeholder="رقم الهاتف" required>
+
+            <div class="section-title">👗 الموديلات المختارة</div>
+            
+            <div id="models-list">
+                </div>
+
+            <button type="button" class="add-more-btn" onclick="addNewModel()">➕ إضافة موديل آخر للطلبية</button>
+
+            <div class="section-title">🚚 الشحن</div>
+            <div class="allowed-badge">✅ مسموح بفتح الطرد والتأكد من المقاس والجودة قبل الدفع</div>
+            
+            <div class="choice-btn-group">
+                <div class="choice-btn" id="homeBtn" onclick="setDelivery('adomicile')">🏠 توصيل منزلي</div>
+                <div class="choice-btn" id="deskBtn" onclick="setDelivery('stop desk')">🏢 مكتب ياليدين</div>
+            </div>
+            <input type="hidden" name="delivery_type" id="delivery_type" required>
+
+            <div id="locationFields" class="hidden">
+                <select name="wilaya" id="wilaya" onchange="initCommunes()" required></select>
+                <select name="commune" id="commune" style="margin-top:10px" onchange="initOffices()" required></select>
+                <div id="officeDiv" class="hidden"><select id="office" style="margin-top:10px" onchange="setOfficeId()"></select></div>
             </div>
 
-        <button type="button" class="add-more-btn" onclick="addModelCard()">➕ إضافة موديل آخر للطلبية</button>
+            <button type="submit" class="submit-btn" id="subBtn" style="margin-top:20px">تأكيد الطلبية</button>
+        </form>
+    </div>
 
-        <div class="section-title">🚚 خيارات التوصيل</div>
-        <div class="allowed-badge">📢 ملاحظة: مسموح بفتح الطرد ومعاينة السلعة قبل الدفع</div>
-        
-        <div class="row" style="margin-bottom:15px">
-            <div class="delivery-btn" id="btnHome" onclick="setDeliv('home')">🏠 للمنزل</div>
-            <div class="delivery-btn" id="btnDesk" onclick="setDeliv('desk')">🏢 المكتب</div>
-        </div>
-        <input type="hidden" id="del_type" required>
-
-        <div id="geoArea" class="hidden">
-            <select id="wilaya" onchange="loadCommunes()" required>
-                <option value="">-- اختر الولاية --</option>
-            </select>
-            <select id="commune" required>
-                <option value="">-- اختر البلدية --</option>
-            </select>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">إرسال الطلب الآن</button>
-    </form>
+    <div id="success-box" class="hidden" style="text-align:center; padding:40px">
+        <h2 style="color:var(--success)">✅ تم استلام طلبك بنجاح!</h2>
+        <p>سنتصل بك لتأكيد التفاصيل قريباً.</p>
+        <button class="start-btn" onclick="location.reload()" style="font-size: 1rem; padding: 10px 25px;">طلب جديد</button>
+    </div>
 </div>
 
 <script>
-    let modelCount = 0;
+    let modelCounter = 0;
     let yalidineData = [];
-
-    // القوائم الكاملة المطلوبة
-    const colors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "لون آخر (اكتبه)"];
-    const sizes = ["36", "38", "40", "42", "44", "46", "48", "مقاس آخر (اكتبه)"];
-    const models = {
+    
+    const modelImages = {
         "Noor": "https://i.ibb.co/sJwGWZ44/NOOR.jpg",
-        "Ghazelle": "https://i.ibb.co/LXbPT7qB/GHAZELLE-BLAC.jpg",
+        "Rihanna": "https://i.ibb.co/fVv1mD5t/IMG-20250720-202052-133.webp",
+        "Ghazelle": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp",
         "Miral": "https://i.ibb.co/fz608WG7/MIRAL-PERLE.jpg",
-        "Rihanna": "https://i.ibb.co/9mt8RZL2/IMG-20250720-202052-133.webp",
-        "Hiba": "https://i.ibb.co/FbmcMJvt/RAHAF-VERT-DEAU.jpg"
+        "Hiba": "https://i.ibb.co/FbmcMJvt/RAHAF-VERT-DEAU.jpg",
+        "Rahaf": "https://i.ibb.co/FbmcMJvt/RAHAF-VERT-DEAU.jpg",
+        "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
     };
 
-    // وظيفة إضافة بطاقة موديل جديدة
-    function addModelCard() {
-        modelCount++;
-        const card = document.createElement('div');
-        card.className = 'model-card';
-        card.id = `card_${modelCount}`;
-        card.innerHTML = `
-            ${modelCount > 1 ? `<span class="remove-btn" onclick="removeModel(${modelCount})">حذف الموديل ✖</span>` : ''}
-            <div class="img-preview" id="prev_${modelCount}"><p style="color:#94a3b8">صورة الموديل المختار</p></div>
-            
-            <select class="model-select" onchange="updateImg(this, ${modelCount})" required>
-                <option value="">-- اختر الموديل --</option>
-                ${Object.keys(models).map(m => `<option value="${m}">${m}</option>`).join('')}
-            </select>
+    const allColors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "لون آخر"];
+    const allSizes = ["36", "38", "40", "42", "44", "46", "48", "مقاس آخر"];
 
-            <div class="row">
-                <div style="flex:1">
-                    <select class="color-select" onchange="toggleCustom(this, 'cCol_${modelCount}')" required>
-                        <option value="">🎨 اللون</option>
-                        ${colors.map(c => `<option value="${c}">${c}</option>`).join('')}
-                    </select>
-                    <input type="text" id="cCol_${modelCount}" placeholder="اكتب اللون هنا" class="hidden custom-input">
-                </div>
-                <div style="flex:1">
-                    <select class="size-select" onchange="toggleCustom(this, 'cSiz_${modelCount}')" required>
-                        <option value="">📏 المقاس</option>
-                        ${sizes.map(s => `<option value="${s}">${s}</option>`).join('')}
-                    </select>
-                    <input type="text" id="cSiz_${modelCount}" placeholder="اكتب المقاس" class="hidden custom-input">
-                </div>
+    function openApp() {
+        document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
+        setTimeout(() => { document.getElementById('app-form').style.display = 'block'; }, 600);
+    }
+
+    function addNewModel() {
+        modelCounter++;
+        const modelDiv = document.createElement('div');
+        modelDiv.className = 'model-box';
+        modelDiv.id = `model_item_${modelCounter}`;
+        modelDiv.innerHTML = `
+            ${modelCounter > 1 ? `<span class="remove-model" onclick="removeModel(${modelCounter})">حذف ✖</span>` : ''}
+            <div class="img-display-area" id="img_display_${modelCounter}">
+                <p style="color: #999;">اختر المودال</p>
+            </div>
+            <select class="m-select" onchange="updateModelImg(this, ${modelCounter})" required>
+                <option value="">-- اختر المودال --</option>
+                <option value="Noor">Noor</option><option value="Ghazelle">Ghazelle</option>
+                <option value="Miral">Miral</option><option value="Hiba">Hiba</option>
+                <option value="Rihanna">Rihanna</option><option value="Rahaf">Rahaf</option>
+            </select>
+            <div class="input-row" style="margin-top:10px">
+                <select class="c-select" required>
+                    <option value="">-- اللون --</option>
+                    ${allColors.map(c => `<option value="${c}">${c}</option>`).join('')}
+                </select>
+                <select class="s-select" required>
+                    <option value="">-- المقاس --</option>
+                    ${allSizes.map(s => `<option value="${s}">${s}</option>`).join('')}
+                </select>
             </div>
         `;
-        document.getElementById('modelsContainer').appendChild(card);
+        document.getElementById('models-list').appendChild(modelDiv);
     }
 
-    function removeModel(id) { document.getElementById(`card_${id}`).remove(); }
-
-    function updateImg(sel, id) {
-        const p = document.getElementById(`prev_${id}`);
-        p.innerHTML = sel.value ? `<img src="${models[sel.value]}">` : `<p>صورة الموديل</p>`;
+    function removeModel(id) {
+        document.getElementById(`model_item_${id}`).remove();
     }
 
-    function toggleCustom(sel, inputId) {
-        const input = document.getElementById(inputId);
-        if(sel.value.includes("اكتبه")) {
-            input.classList.remove('hidden');
-            input.required = true;
-        } else {
-            input.classList.add('hidden');
-            input.required = false;
-        }
+    function updateModelImg(select, id) {
+        const url = modelImages[select.value] || modelImages["DEFAULT"];
+        const display = document.getElementById(`img_display_${id}`);
+        display.innerHTML = select.value ? `<img src="${url}">` : '<p style="color: #999;">اختر المودال</p>';
     }
 
-    // جلب بيانات ياليدين
     window.onload = async () => {
-        addModelCard();
+        addNewModel(); // إضافة الموديل الأول تلقائياً
         try {
-            const res = await fetch('/api/yalidine-data'); // استبدل برابط الـ API الخاص بك
+            const res = await fetch('/api/yalidine-data');
             yalidineData = await res.json();
-        } catch(e) { console.error("Data Load Error"); }
+        } catch (e) { console.error("Data error", e); }
     };
 
-    function setDeliv(type) {
-        document.getElementById('del_type').value = type;
-        document.getElementById('btnHome').classList.toggle('active', type==='home');
-        document.getElementById('btnDesk').classList.toggle('active', type==='desk');
-        document.getElementById('geoArea').classList.remove('hidden');
+    function setDelivery(type) {
+        document.getElementById('delivery_type').value = type;
+        document.getElementById('homeBtn').className = 'choice-btn' + (type === 'adomicile' ? ' active' : '');
+        document.getElementById('deskBtn').className = 'choice-btn' + (type === 'stop desk' ? ' active' : '');
+        document.getElementById('locationFields').classList.remove('hidden');
         
         const wSelect = document.getElementById('wilaya');
         wSelect.innerHTML = '<option value="">-- اختر الولاية --</option>';
-        [...new Set(yalidineData.map(r => r[1]))].sort().forEach(w => wSelect.add(new Option(w, w)));
+        const uniqueW = [...new Set(yalidineData.map(r => r[1]))].sort();
+        uniqueW.forEach(w => wSelect.add(new Option(w, w)));
     }
 
-    function loadCommunes() {
+    function initCommunes() {
         const w = document.getElementById('wilaya').value;
         const cSelect = document.getElementById('commune');
         cSelect.innerHTML = '<option value="">-- اختر البلدية --</option>';
-        yalidineData.filter(r => r[1] === w).forEach(r => cSelect.add(new Option(r[2], r[2])));
+        const filtered = yalidineData.filter(r => r[1] === w);
+        [...new Set(filtered.map(r => r[2]))].sort().forEach(c => cSelect.add(new Option(c, c)));
     }
 
     document.getElementById('orderForm').onsubmit = async function(e) {
         e.preventDefault();
-        const btn = document.getElementById('submitBtn');
-        btn.disabled = true;
-        btn.innerText = "جاري الإرسال...";
+        const btn = document.getElementById('subBtn');
+        btn.disabled = true; btn.innerText = "جاري الإرسال...";
 
-        // تجميع بيانات الموديلات المتعددة
         let details = [];
-        document.querySelectorAll('.model-card').forEach((card, index) => {
-            const model = card.querySelector('.model-select').value;
-            let color = card.querySelector('.color-select').value;
-            let size = card.querySelector('.size-select').value;
-            
-            if(color.includes("اكتبه")) color = card.querySelector('.custom-input[id^="cCol"]').value;
-            if(size.includes("اكتبه")) size = card.querySelector('.custom-input[id^="cSiz"]').value;
-            
-            details.push(`[${model} | ${color} | ${size}]`);
+        document.querySelectorAll('.model-box').forEach(box => {
+            const m = box.querySelector('.m-select').value;
+            const c = box.querySelector('.c-select').value;
+            const s = box.querySelector('.s-select').value;
+            details.push(`${m} (${c} - ${s})`);
         });
 
         const payload = {
-            firstname: document.getElementById('fname').value,
-            familyname: document.getElementById('lname').value,
-            phone: document.getElementById('phone').value,
-            delivery_type: document.getElementById('del_type').value,
-            wilaya: document.getElementById('wilaya').value,
-            commune: document.getElementById('commune').value,
+            firstname: this.firstname.value,
+            familyname: this.familyname.value,
+            phone: this.phone.value,
+            delivery_type: this.delivery_type.value,
+            wilaya: this.wilaya.value,
+            commune: this.commune.value,
             description: details.join(" + ")
         };
 
-        console.log("Sending Data:", payload);
-        alert("تم إرسال طلبيتك بنجاح! شكراً لثقتكم.");
-        btn.disabled = false;
-        btn.innerText = "إرسال الطلب الآن";
+        try {
+            const res = await fetch('/api/orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+                document.getElementById('form-content').classList.add('hidden');
+                document.getElementById('success-box').classList.remove('hidden');
+                window.scrollTo(0,0);
+            }
+        } catch (err) { alert("خطأ في الإرسال"); }
+        btn.disabled = false; btn.innerText = "تأكيد الطلبية";
     };
 </script>
-
 </body>
 </html>
