@@ -45,8 +45,8 @@
         .header-form img { width: 80px; }
         .section-title { font-size: 1.1rem; font-weight: bold; color: var(--primary); margin: 20px 0 15px; border-bottom: 1px dashed #e0e0e0; }
         
-        .input-row { display: flex; gap: 12px; margin-bottom: 15px; }
-        .input-row > * { flex: 1; }
+        .input-row { display: flex; gap: 12px; margin-bottom: 15px; flex-wrap: wrap; }
+        .input-row > * { flex: 1; min-width: 120px; }
         
         input, select { 
             padding: 15px; 
@@ -83,6 +83,8 @@
         }
         .img-display-area img { max-width: 100%; max-height: 200px; object-fit: contain; }
         .hidden { display: none !important; }
+        
+        .custom-input { margin-top: -5px; border-color: var(--accent); background: #fff; }
     </style>
 </head>
 <body>
@@ -159,8 +161,8 @@
         "DEFAULT": "https://i.ibb.co/Gf0SMJr2/GHAZELLE-COLLECTION.webp"
     };
 
-    const allColors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "أو اللون"];
-    const allSizes = ["36", "38", "40", "42", "44", "46", "48", "أو المقاس"];
+    const allColors = ["أسود", "أبيض", "أحمر", "أزرق ملكي", "أزرق سماوي", "أخضر غامق", "أخضر فاتح", "وردي", "بنفسجي", "رمادي", "بني", "بيج", "كريمي", "خردلي", "لون آخر"];
+    const allSizes = ["36", "38", "40", "42", "44", "46", "48", "مقاس آخر"];
 
     function openApp() {
         document.getElementById('welcome-screen').style.transform = 'translateY(-100%)';
@@ -184,17 +186,34 @@
                 <option value="Rihanna">Rihanna</option><option value="Rahaf">Rahaf</option>
             </select>
             <div class="input-row">
-                <select class="c-select" required>
-                    <option value="">-- اللون --</option>
-                    ${allColors.map(c => `<option value="${c}">${c}</option>`).join('')}
-                </select>
-                <select class="s-select" required>
-                    <option value="">-- المقاس --</option>
-                    ${allSizes.map(s => `<option value="${s}">${s}</option>`).join('')}
-                </select>
+                <div>
+                    <select class="c-select" onchange="toggleCustom(this, 'color')" required>
+                        <option value="">-- اللون --</option>
+                        ${allColors.map(c => `<option value="${c}">${c}</option>`).join('')}
+                    </select>
+                    <input type="text" class="custom-input hidden" placeholder="اكتب اللون هنا">
+                </div>
+                <div>
+                    <select class="s-select" onchange="toggleCustom(this, 'size')" required>
+                        <option value="">-- المقاس --</option>
+                        ${allSizes.map(s => `<option value="${s}">${s}</option>`).join('')}
+                    </select>
+                    <input type="text" class="custom-input hidden" placeholder="اكتب المقاس هنا">
+                </div>
             </div>
         `;
         document.getElementById('models-list').appendChild(modelDiv);
+    }
+
+    function toggleCustom(select, type) {
+        const customInput = select.nextElementSibling;
+        if (select.value === "لون آخر" || select.value === "مقاس آخر") {
+            customInput.classList.remove('hidden');
+            customInput.required = true;
+        } else {
+            customInput.classList.add('hidden');
+            customInput.required = false;
+        }
     }
 
     function removeModel(id) {
@@ -254,19 +273,14 @@
     function initOffices() {
         const type = document.getElementById('delivery_type').value;
         if (type !== 'stop desk') return;
-        
         const w = document.getElementById('wilaya').value;
         const c = document.getElementById('commune').value;
         const oSelect = document.getElementById('office');
         const oDiv = document.getElementById('officeDiv');
-        
         const offices = yalidineData.filter(r => r[1] === w && r[2] === c && r[3] && r[3].trim() !== "");
-        
         if (offices.length > 0) {
             oSelect.innerHTML = '<option value="">-- اختر المكتب --</option>';
-            offices.forEach(off => {
-                oSelect.add(new Option(off[3], off[0])); 
-            });
+            offices.forEach(off => oSelect.add(new Option(off[3], off[0])));
             oDiv.classList.remove('hidden');
             oSelect.required = true;
         } else {
@@ -283,9 +297,13 @@
         let details = [];
         document.querySelectorAll('.model-box').forEach(box => {
             const m = box.querySelector('.m-select').value;
-            const c = box.querySelector('.c-select').value;
-            const s = box.querySelector('.s-select').value;
-            details.push(`${m} (${c} - ${s})`);
+            const colorSelect = box.querySelector('.c-select');
+            const sizeSelect = box.querySelector('.s-select');
+            
+            const color = colorSelect.value === "لون آخر" ? colorSelect.nextElementSibling.value : colorSelect.value;
+            const size = sizeSelect.value === "مقاس آخر" ? sizeSelect.nextElementSibling.value : sizeSelect.value;
+            
+            details.push(`${m} (${color} - ${size})`);
         });
 
         const fullDescription = details.join(" + ") + " (مسموح الفتح)";
